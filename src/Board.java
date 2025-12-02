@@ -5,7 +5,7 @@ public class Board
     private SquareState[][] board;
     private final int boardSize;
 
-    Board(int boardSize)
+    Board(final int boardSize)
     {
         this.boardSize = boardSize;
         createBoard();
@@ -19,7 +19,7 @@ public class Board
             Arrays.fill(board[i], SquareState.EMPTY);
     }
 
-    public void setCellContent(int row, int col, SquareState square)
+    public void setCellContent(final int row,final int col,final SquareState square)
     {
         if(row < 0 || row >= boardSize)
             throw new IndexOutOfBoundsException("Row: " + row + " is out the bounds.");
@@ -29,7 +29,7 @@ public class Board
         this.board[row][col] = square;
     }
 
-    public SquareState lookAtCellContent(int row, int col)
+    public SquareState lookAtCellContent(final int row,final int col)
     {
         if(row < 0 || row >= boardSize)
             throw new IndexOutOfBoundsException("Row: " + row + " is out the bounds.");
@@ -41,8 +41,8 @@ public class Board
 
     public void printBoard()
     {
-        int separatorLength = 5 + (4 * (boardSize - 1));
-        String separator = "-".repeat(separatorLength);
+        final int separatorLength = 5 + (4 * (boardSize - 1));
+        final String separator = "-".repeat(separatorLength);
 
         System.out.println();
         for(int i = 0; i < boardSize; i++)
