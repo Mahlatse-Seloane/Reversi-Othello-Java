@@ -3,14 +3,19 @@ import java.util.Arrays;
 public class Board
 {
     private SquareState[][] board;
-    private int boardSize;
+    private final int boardSize;
 
-    public void createBoard(int boardSize)
+    Board(int boardSize)
     {
         this.boardSize = boardSize;
+        createBoard();
+    }
+
+    public void createBoard()
+    {
         this.board = new SquareState[boardSize][boardSize];
 
-        for(int i = 0; i < this.boardSize; i++)
+        for(int i = 0; i < boardSize; i++)
             Arrays.fill(board[i], SquareState.EMPTY);
     }
 
