@@ -19,6 +19,15 @@ public class Board
             Arrays.fill(board[i], SquareState.EMPTY);
     }
 
+    public SquareState[][] peekBoard()
+    {
+        SquareState[][] copy = new SquareState[boardSize][];
+        for (int i = 0; i < boardSize; i++)
+            copy[i] = Arrays.copyOf(board[i], boardSize);
+
+        return copy;
+    }
+
     public void setCellContent(final int row,final int col,final SquareState square)
     {
         if(row < 0 || row >= boardSize)
