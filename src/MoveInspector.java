@@ -1,0 +1,224 @@
+import java.util.ArrayList;
+
+public class MoveInspector
+{
+    private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
+    private MoveInspector(){}
+
+    public static Move[] findValidMoves(final SquareState[][] board, final SquareState curPToken)
+    {
+        boardRequirementsCheck(board);
+        final int boardSize = board.length;
+        ArrayList<Move> validMoves = new ArrayList<>();
+
+        for (int row = 0; row < boardSize; row++)
+        {
+            for (int col = 0; col < boardSize; col++)
+            {
+                boundsCheck(boardSize,row,col);
+                if (board[row][col] == SquareState.EMPTY)
+                {
+                    int noOfFlips = 0;
+                    for(int i = 0; i < 8; i++)
+                        noOfFlips += countFlippableTokens(board,curPToken,row,col,dir[i][0],dir[i][1]);
+
+                    if (noOfFlips > 0)
+                        validMoves.add(new Move(row,col));
+                }
+            }
+        }
+
+        return validMoves.toArray(Move[]::new);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped upward from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countUpFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, -1, 0);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped diagonally up right from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countDiagonalUpRightFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, -1, 1);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped right from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countRightFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, 0, 1);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped diagonally down right from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countDiagonalDownRightFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, 1, 1);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped downward from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countDownFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, 1, 0);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped diagonally down left from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countDiagonalDownLeftFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, 1, -1);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped left from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countLeftFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, 0, -1);
+    }
+
+    /**
+     * Counts how many opponent pieces can be flipped diagonally up left from the given cell.
+     *
+     * @param board The current board state
+     * @param curPToken The token of the player making a move
+     * @param row Starting row
+     * @param col Starting column
+     * @return Number of pieces flippable in the given direction
+     */
+    public static int countDiagonalUpLeftFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    {
+        return countFlipsInDirection(board, curPToken, row, col, -1, -1);
+    }
+
+    private static int countFlipsInDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, int dRow, int dCol)
+    {
+        boardRequirementsCheck(board);
+        boundsCheck(board.length, row, col);
+        return countFlippableTokens(board, curPToken, row, col, dRow, dCol);
+    }
+
+
+    private static void boardRequirementsCheck(final SquareState[][] board)
+    {
+        if (board == null)
+            throw new IllegalArgumentException("Board cannot be null");
+
+        final int boardSize = board.length;
+        for (SquareState[] row : board)
+        {
+            if (row == null)
+                throw new IllegalArgumentException("Board rows cannot be null");
+
+            if (row.length != boardSize)
+                throw new IllegalArgumentException("Board must be square");
+        }
+    }
+
+    public static void boundsCheck(final int boardSize,int row,int col)
+    {
+        if (row < 0 || row >= boardSize)
+            throw new IndexOutOfBoundsException("Row: " + row + " is out the bounds.");
+        if (col < 0 || col >= boardSize)
+            throw new IndexOutOfBoundsException("Col: " + col + " is out the bounds.");
+    }
+
+    private static int countFlippableTokens(final SquareState[][] board,final SquareState curPToken,int row,int col,final int dRow,final int dCol)
+    {
+        final int boardSize = board.length;
+        final int maxStep = calcMaxSteps(boardSize, row, col, dRow, dCol);
+
+        if (maxStep < 2)
+            return 0;
+
+        final SquareState cell = board[row + dRow][col + dCol];
+        if (cell == curPToken || cell == SquareState.EMPTY)
+            return 0;
+
+        return noOfPossibleFlips(board, curPToken, maxStep, row, col, dRow, dCol);
+    }
+
+    private static int calcMaxSteps(final int boardSize, int row, int col, final int dRow, final int dCol)
+    {
+        final int maxVerticalSteps = (dRow <= 0) ? row : ((boardSize - 1) - row);
+        final int maxHorizontalSteps = (dCol <= 0) ? col : ((boardSize - 1) - col);
+
+        int maxSteps;
+        final boolean isStraight = (dRow == 0 || dCol == 0);
+        if (isStraight)
+            maxSteps = (dRow == 0) ? maxHorizontalSteps : maxVerticalSteps;
+        else
+            maxSteps = Math.min(maxHorizontalSteps,maxVerticalSteps);
+
+        return maxSteps;
+    }
+
+    private static int noOfPossibleFlips(final SquareState[][] board, final SquareState curPToken, final int maxSteps, int row, int col, final int dRow, final int dCol)
+    {
+        for (int i = 0; i < maxSteps; i++)
+        {
+            row += dRow;
+            col += dCol;
+            final SquareState cell = board[row][col];
+
+            if (cell == curPToken)
+                return i; //return value is number of opponent tokens to be flipped
+            else if (cell == SquareState.EMPTY)
+                return 0;
+        }
+
+        return 0;
+    }
+}
