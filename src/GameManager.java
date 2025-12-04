@@ -10,6 +10,19 @@ public class GameManager
 
     }
 
+    public void simulateSingleGame(final int boardSize)
+    {
+        if(!doesBoardSizeMeetRequirements(boardSize))
+            return;
+
+        initializeBoard(boardSize);
+    }
+
+    private boolean doesBoardSizeMeetRequirements(final int boardSize)
+    {
+        return (boardSize >= 4 && boardSize <= 16 && boardSize % 2 == 0);
+    }
+
     private void initializeBoard(final int boardSize)
     {
         curBoardSize = boardSize;
