@@ -1,5 +1,31 @@
+import java.util.ArrayList;
+
 public class GameLogger
 {
+    public static void LogMoves(final ArrayList<Move> moveAndFlipsCoordinates, final String playerID)
+    {
+        if (moveAndFlipsCoordinates == null)
+            throw new IllegalArgumentException("Moves cannot be null");
+
+        if (moveAndFlipsCoordinates.isEmpty())
+            throw new IllegalArgumentException("Moves cannot be empty");
+
+        if (playerID.isEmpty())
+            throw new IllegalArgumentException("Player ID cannot be empty");
+
+        Move placement = moveAndFlipsCoordinates.removeFirst();
+        StringBuilder playerTurn = new StringBuilder("r" + placement.row() + "c" + placement.col() + " " + playerID + " ,");
+
+        final int noOfMoves = moveAndFlipsCoordinates.size();
+        for (int i = 0; i < noOfMoves; i++)
+        {
+            Move flip = moveAndFlipsCoordinates.removeFirst();
+            playerTurn.append(" r").append(flip.row()).append("c").append(flip.col());
+        }
+
+        System.out.println(playerTurn);
+    }
+
     public static void printBoard(final SquareState[][] board,final int boardSize)
     {
         final int CELL_WIDTH = 3; // Width of each cell’s content area
