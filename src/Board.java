@@ -47,31 +47,4 @@ public class Board
 
         return this.board[row][col];
     }
-
-    public void printBoard()
-    {
-        final int separatorLength = 5 + (4 * (boardSize - 1));
-        final String separator = "-".repeat(separatorLength);
-
-        System.out.println();
-        for(int i = 0; i < boardSize; i++)
-        {
-            System.out.println(separator);
-            StringBuilder row = new StringBuilder("|");
-            for (int j = 0; j < boardSize; j++)
-            {
-                String cellContent = switch(board[i][j])
-                {
-                    case SquareState.EMPTY -> "  ";
-                    case SquareState.WHITE -> " W";
-                    case SquareState.BLACK -> " B";
-                };
-
-                row.append(cellContent).append(" |");
-            }
-            System.out.println(row);
-        }
-
-        System.out.println(separator);
-    }
 }
