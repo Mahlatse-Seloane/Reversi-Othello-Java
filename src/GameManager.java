@@ -50,6 +50,8 @@ public class GameManager
             {
                 consecutivePasses++;
             }
+
+            alternatingTurns();
         }
     }
 
@@ -143,4 +145,10 @@ public class GameManager
             }
         }
     }
+
+   private void alternatingTurns()
+   {
+       currentIndex = 1 - currentIndex;
+       curPlayer = players[currentIndex];
+   }
 }
