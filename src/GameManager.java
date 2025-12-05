@@ -19,6 +19,13 @@ public class GameManager
 
         System.out.println("Board size: " + boardSize + " x " + boardSize);
         GameLogger.printBoard(board.peekBoard(),curBoardSize);
+
+        while(availableSpaces > 0)
+       {
+            Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPToken);
+
+            availableSpaces--;
+       }
     }
 
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
