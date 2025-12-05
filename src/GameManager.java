@@ -94,8 +94,7 @@ public class GameManager
 
         final int maxValidMoves = validMoves.length;
 
-        Random random = new Random();
-        final int chosenMoveIndex = random.nextInt(0, maxValidMoves);
+        final int chosenMoveIndex = curPlayer.chooseMove(validMoves);
         if(chosenMoveIndex < 0 || chosenMoveIndex > maxValidMoves)
             throw new IndexOutOfBoundsException("Chosen move index: " + chosenMoveIndex + " is out of bounds.");
 
