@@ -21,26 +21,33 @@ public class GameManager
         if(!doesBoardSizeMeetRequirements(boardSize))
             return;
 
+        if(p1 == null || p2 == null)
+            throw new IllegalArgumentException("Players cannot be null");
+
+        players[0] = p1;
+        players[1] = p2;
+
+        assignPlayersIDsAndTokens();
         initializeBoard(boardSize);
 
         System.out.println("Board size: " + boardSize + " x " + boardSize);
         GameLogger.printBoard(board.peekBoard(),curBoardSize);
 
-        while(availableSpaces > 0)
-       {
+        int conservativePasses = 0;
+        while(availableSpaces > 0 && conservativePasses < 2)
+        {
+            conservativePasses++;
             Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPToken);
-
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
-                applyMove(chosenMove);
-                flipOpponentTokens(chosenMove);
-
+                applyMove(chosenMove); flipOpponentTokens(chosenMove);
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
+                conservativePasses = 0;
             }
 
             availableSpaces--;
-       }
+        }
     }
 
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
