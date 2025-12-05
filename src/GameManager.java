@@ -3,7 +3,7 @@ public class GameManager
     private Board board;
     private int curBoardSize;
     private int availableSpaces;
-    private SquareState curPToken;
+    private SquareState curPToken = SquareState.WHITE;
 
     GameManager()
     {
@@ -16,6 +16,9 @@ public class GameManager
             return;
 
         initializeBoard(boardSize);
+
+        System.out.println("Board size: " + boardSize + " x " + boardSize);
+        GameLogger.printBoard(board.peekBoard(),curBoardSize);
     }
 
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
