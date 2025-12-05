@@ -5,13 +5,15 @@ public class GameManager
     private Board board;
     private int curBoardSize;
     private int availableSpaces;
+    private PlayerType[] players;
+    private int currentIndex = 0;
     private PlayerType curPlayer;
     private SquareState curPToken = SquareState.WHITE;
     private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
 
     GameManager()
     {
-
+        players = new PlayerType[2];
     }
 
     public void simulateSingleGame(final int boardSize)
@@ -27,6 +29,7 @@ public class GameManager
         while(availableSpaces > 0)
        {
             Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPToken);
+
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
@@ -43,6 +46,15 @@ public class GameManager
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
     {
         return (boardSize >= 4 && boardSize <= 16 && boardSize % 2 == 0);
+    }
+
+    private void assignPlayersIDsAndTokens()
+    {
+        players[0].setPlayerID("alg1");
+        players[0].setPlayerToken(SquareState.WHITE);
+
+        players[1].setPlayerID("alg2");
+        players[1].setPlayerToken(SquareState.BLACK);
     }
 
     private void initializeBoard(final int boardSize)
