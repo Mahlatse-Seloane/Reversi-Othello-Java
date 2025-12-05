@@ -5,7 +5,7 @@ public class GameManager
     private Board board;
     private int curBoardSize;
     private int availableSpaces;
-    private PlayerType[] players;
+    private final PlayerType[] players;
     private int currentIndex = 0;
     private PlayerType curPlayer;
     private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
@@ -33,20 +33,23 @@ public class GameManager
         System.out.println("Board size: " + boardSize + " x " + boardSize);
         GameLogger.printBoard(board.peekBoard(),curBoardSize);
 
-        int conservativePasses = 0;
-        while(availableSpaces > 0 && conservativePasses < 2)
+        int consecutivePasses = 0;
+        while(availableSpaces > 0 && consecutivePasses < 2)
         {
-            conservativePasses++;
             Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
                 applyMove(chosenMove); flipOpponentTokens(chosenMove);
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
-                conservativePasses = 0;
-            }
 
-            availableSpaces--;
+                consecutivePasses = 0;
+                availableSpaces--;
+            }
+            else
+            {
+                consecutivePasses++;
+            }
         }
     }
 
