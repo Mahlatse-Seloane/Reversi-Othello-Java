@@ -16,7 +16,7 @@ public class GameManager
         players = new PlayerType[2];
     }
 
-    public void simulateSingleGame(final int boardSize)
+    public void simulateSingleGame(final int boardSize, PlayerType p1, PlayerType p2)
     {
         if(!doesBoardSizeMeetRequirements(boardSize))
             return;
