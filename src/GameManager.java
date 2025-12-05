@@ -8,7 +8,6 @@ public class GameManager
     private PlayerType[] players;
     private int currentIndex = 0;
     private PlayerType curPlayer;
-    private SquareState curPToken = SquareState.WHITE;
     private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
 
     GameManager()
@@ -28,6 +27,7 @@ public class GameManager
         players[1] = p2;
 
         assignPlayersIDsAndTokens();
+        selectStartingPlayer();
         initializeBoard(boardSize);
 
         System.out.println("Board size: " + boardSize + " x " + boardSize);
@@ -37,7 +37,7 @@ public class GameManager
         while(availableSpaces > 0 && conservativePasses < 2)
         {
             conservativePasses++;
-            Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPToken);
+            Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
@@ -62,6 +62,13 @@ public class GameManager
 
         players[1].setPlayerID("alg2");
         players[1].setPlayerToken(SquareState.BLACK);
+    }
+
+    private void selectStartingPlayer()
+    {
+        Random random = new Random();
+        currentIndex = random.nextInt(0, 2);
+        curPlayer = players[currentIndex];
     }
 
     private void initializeBoard(final int boardSize)
@@ -100,7 +107,7 @@ public class GameManager
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
 
-        board.setCellContent(chosenMove.row(),chosenMove.col(), curPToken);
+        board.setCellContent(chosenMove.row(),chosenMove.col(), curPlayer.getPlayerToken());
     }
 
     private void flipOpponentTokens(Move chosenMove)
@@ -108,6 +115,7 @@ public class GameManager
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
 
+        SquareState curPToken = curPlayer.getPlayerToken();
         for(int i = 0; i < 8; i++)
         {
             int row = chosenMove.row(), col = chosenMove.col();
