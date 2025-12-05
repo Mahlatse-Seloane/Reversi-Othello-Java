@@ -30,6 +30,7 @@ public class GameManager
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
+                applyMove(chosenMove);
 
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
             }
@@ -72,5 +73,13 @@ public class GameManager
             throw new IndexOutOfBoundsException("Chosen move index: " + chosenMoveIndex + " is out of bounds.");
 
         return validMoves[chosenMoveIndex];
+    }
+
+    private void applyMove(Move chosenMove)
+    {
+        if(chosenMove == null)
+            throw new IllegalArgumentException("Chosen move cannot be null");
+
+        board.setCellContent(chosenMove.row(),chosenMove.col(), curPToken);
     }
 }
