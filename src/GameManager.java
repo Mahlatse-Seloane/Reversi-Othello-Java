@@ -31,6 +31,7 @@ public class GameManager
             {
                 Move chosenMove = chooseMove(validMoves);
                 applyMove(chosenMove);
+                flipOpponentTokens(chosenMove);
 
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
             }
@@ -81,5 +82,36 @@ public class GameManager
             throw new IllegalArgumentException("Chosen move cannot be null");
 
         board.setCellContent(chosenMove.row(),chosenMove.col(), curPToken);
+    }
+
+    private void flipOpponentTokens(Move chosenMove)
+    {
+        if(chosenMove == null)
+            throw new IllegalArgumentException("Chosen move cannot be null");
+
+        for(int i = 0; i < 8; i++)
+        {
+            int row = chosenMove.row(), col = chosenMove.col();
+            int dRow = dir[i][0], dCol = dir[i][1];
+            int maxSteps = switch (i)
+            {
+                case 0 -> MoveInspector.countUpFlips(board.peekBoard(),curPToken,row,col);
+                case 1 -> MoveInspector.countDiagonalUpRightFlips(board.peekBoard(),curPToken,row,col);
+                case 2 -> MoveInspector.countRightFlips(board.peekBoard(),curPToken,row,col);
+                case 3 -> MoveInspector.countDiagonalDownRightFlips(board.peekBoard(),curPToken,row,col);
+                case 4 -> MoveInspector.countDownFlips(board.peekBoard(),curPToken,row,col);
+                case 5 -> MoveInspector.countDiagonalDownLeftFlips(board.peekBoard(),curPToken,row,col);
+                case 6 -> MoveInspector.countLeftFlips(board.peekBoard(),curPToken,row,col);
+                case 7 -> MoveInspector.countDiagonalUpLeftFlips(board.peekBoard(),curPToken,row,col);
+                default -> throw new IllegalStateException("Unexpected value: " + i);
+            };
+
+            for (int j = 0; j < maxSteps; j++)
+            {
+                row += dRow;
+                col += dCol;
+                board.setCellContent(row, col, curPToken);
+            }
+        }
     }
 }
