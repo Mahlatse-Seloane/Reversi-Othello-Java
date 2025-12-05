@@ -1,9 +1,13 @@
+import java.util.Random;
+
 public class GameManager
 {
     private Board board;
     private int curBoardSize;
     private int availableSpaces;
+    private PlayerType curPlayer;
     private SquareState curPToken = SquareState.WHITE;
+    private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
 
     GameManager()
     {
@@ -23,6 +27,12 @@ public class GameManager
         while(availableSpaces > 0)
        {
             Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPToken);
+            if(validMoves.length > 0)
+            {
+                Move chosenMove = chooseMove(validMoves);
+
+                GameLogger.printBoard(board.peekBoard(), curBoardSize);
+            }
 
             availableSpaces--;
        }
@@ -47,5 +57,20 @@ public class GameManager
         board.setCellContent(initialRow+1, initialCol+1,SquareState.BLACK);
 
         availableSpaces = (curBoardSize * curBoardSize) - 4;
+    }
+
+    private Move chooseMove(Move[] validMoves)
+    {
+        if(validMoves == null)
+            throw new IllegalArgumentException("Valid moves list cannot be null");
+
+        final int maxValidMoves = validMoves.length;
+
+        Random random = new Random();
+        final int chosenMoveIndex = random.nextInt(0, maxValidMoves);
+        if(chosenMoveIndex < 0 || chosenMoveIndex > maxValidMoves)
+            throw new IndexOutOfBoundsException("Chosen move index: " + chosenMoveIndex + " is out of bounds.");
+
+        return validMoves[chosenMoveIndex];
     }
 }
