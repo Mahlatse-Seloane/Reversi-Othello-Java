@@ -28,7 +28,7 @@ public class PlayerType
         return playerID;
     }
 
-    public int chooseMove(final Move[] validMoves)
+    public int chooseMove(final SquareState[][] board,final Move[] validMoves)
     {
         Random random = new Random();
         return random.nextInt(0, validMoves.length);
