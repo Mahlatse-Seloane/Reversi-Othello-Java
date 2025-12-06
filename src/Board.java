@@ -28,14 +28,16 @@ public class Board
         return copy;
     }
 
-    public void setCellContent(final int row,final int col,final SquareState square)
+    public void setCellContent(final int row,final int col,final SquareState token)
     {
         if(row < 0 || row >= boardSize)
             throw new IndexOutOfBoundsException("Row: " + row + " is out the bounds.");
         if(col < 0 || col >= boardSize)
             throw new IndexOutOfBoundsException("Col: " + col + " is out the bounds.");
+        if(token == null)
+            throw new IllegalArgumentException("Token cannot be null");
 
-        this.board[row][col] = square;
+        this.board[row][col] = token;
     }
 
     public SquareState lookAtCellContent(final int row,final int col)
