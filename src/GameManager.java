@@ -47,6 +47,7 @@ public class GameManager
                 flipCapturedTokens(chosenMove);
 
                 System.out.println("\n===================================\n");
+                GameLogger.logMoves(chosenMove,flippedTokens,curPlayer.getPlayerID());
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
 
                 consecutivePasses = 0;
