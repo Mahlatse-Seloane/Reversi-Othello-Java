@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class GameLogger
 {
-    public static void LogMoves(final Move chosenMove,final ArrayList<Move> flippedTokens, final String playerID)
+    public static void logMoves(final Move chosenMove,final ArrayList<Move> flippedTokens, final String playerID)
     {
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
@@ -27,6 +27,9 @@ public class GameLogger
 
     public static void printBoard(final SquareState[][] board,final int boardSize)
     {
+        if(board == null)
+            throw new IllegalArgumentException("Board cannot be null");
+
         final int CELL_WIDTH = 3; // Width of each cell’s content area
         final String CELL_FORMAT = "%" + CELL_WIDTH + "s|";
         final String ROW_LABEL_FORMAT = "%2d |"; // Width of each row’s index label
