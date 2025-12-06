@@ -8,4 +8,26 @@ public class SelectiveAI extends PlayerType
     {
         setPlayerID("SelectiveAI");
     }
+
+    private void collectInformation(final SquareState[][] board, final Move[] validMoves)
+    {
+        possibleCaptures = new int[validMoves.length][10];
+
+        int noOfValidMoves = validMoves.length;
+        for (int i = 0; i < noOfValidMoves; i++)
+        {
+            int row = validMoves[i].row(), col = validMoves[i].col();
+            possibleCaptures[i][0] = row;
+            possibleCaptures[i][1] = col;
+
+            possibleCaptures[i][2] = MoveInspector.countUpFlips(board, getPlayerToken(), row, col); //Up
+            possibleCaptures[i][3] = MoveInspector.countDiagonalUpRightFlips(board, getPlayerToken(), row, col); // Up-Right
+            possibleCaptures[i][4] = MoveInspector.countRightFlips(board, getPlayerToken(), row, col); // Right
+            possibleCaptures[i][5] = MoveInspector.countDiagonalDownRightFlips(board, getPlayerToken(), row, col); // Down-Right
+            possibleCaptures[i][6] = MoveInspector.countDownFlips(board, getPlayerToken(), row, col); //Down
+            possibleCaptures[i][7] = MoveInspector.countDiagonalDownLeftFlips(board, getPlayerToken(), row, col); // Down-Left
+            possibleCaptures[i][8] = MoveInspector.countLeftFlips(board, getPlayerToken(), row, col); // Left
+            possibleCaptures[i][9] = MoveInspector.countDiagonalUpLeftFlips(board, getPlayerToken(), row, col); // Up-Left
+        }
+    }
 }
