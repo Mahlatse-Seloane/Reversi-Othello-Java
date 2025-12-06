@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameManager
@@ -15,7 +16,7 @@ public class GameManager
         players = new PlayerType[2];
     }
 
-    public void simulateSingleGame(final int boardSize, PlayerType p1, PlayerType p2)
+    public void simulateSingleGame(final int boardSize,final PlayerType p1,final PlayerType p2)
     {
         if(!doesBoardSizeMeetRequirements(boardSize))
             return;
@@ -40,7 +41,10 @@ public class GameManager
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
-                applyMove(chosenMove); flipOpponentTokens(chosenMove);
+                applyMove(chosenMove);
+                flipCapturedTokens(chosenMove);
+
+                System.out.println("\n===================================\n");
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
 
                 consecutivePasses = 0;
@@ -92,10 +96,10 @@ public class GameManager
         availableSpaces = (curBoardSize * curBoardSize) - 4;
     }
 
-    private Move chooseMove(Move[] validMoves)
+    private Move chooseMove(final Move[] validMoves)
     {
-        if(validMoves == null)
-            throw new IllegalArgumentException("Valid moves list cannot be null");
+        if(validMoves == null || validMoves.length == 0)
+            throw new IllegalArgumentException("Valid moves list cannot be " + (validMoves == null ? "null":"empty"));
 
         final int maxValidMoves = validMoves.length;
 
@@ -106,7 +110,7 @@ public class GameManager
         return validMoves[chosenMoveIndex];
     }
 
-    private void applyMove(Move chosenMove)
+    private void applyMove(final Move chosenMove)
     {
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
@@ -114,7 +118,7 @@ public class GameManager
         board.setCellContent(chosenMove.row(),chosenMove.col(), curPlayer.getPlayerToken());
     }
 
-    private void flipOpponentTokens(Move chosenMove)
+    private void flipCapturedTokens(final Move chosenMove)
     {
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
