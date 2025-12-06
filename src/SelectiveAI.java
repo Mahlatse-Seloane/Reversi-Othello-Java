@@ -9,6 +9,25 @@ public class SelectiveAI extends PlayerType
         setPlayerID("SelectiveAI");
     }
 
+    public int findMaxPossibleCaptures()
+    {
+        int maxPossibleCaptures = Arrays.stream(possibleCaptures[0]).sum();
+        int index = 0;
+        final int noOfValidMoves = possibleCaptures.length;
+
+        for (int i = 1; i < noOfValidMoves; i++)
+        {
+            int noOfPossibleCaptures = Arrays.stream(possibleCaptures[i]).sum();
+            if (noOfPossibleCaptures > maxPossibleCaptures)
+            {
+                index = i;
+                maxPossibleCaptures = noOfPossibleCaptures;
+            }
+        }
+
+        return index;
+    }
+
     private void collectInformation(final SquareState[][] board, final Move[] validMoves)
     {
         possibleCaptures = new int[validMoves.length][10];
