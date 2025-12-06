@@ -2,24 +2,23 @@ import java.util.ArrayList;
 
 public class GameLogger
 {
-    public static void LogMoves(final ArrayList<Move> moveAndFlipsCoordinates, final String playerID)
+    public static void LogMoves(final Move chosenMove,final ArrayList<Move> flippedTokens, final String playerID)
     {
-        if (moveAndFlipsCoordinates == null)
-            throw new IllegalArgumentException("Moves cannot be null");
+        if(chosenMove == null)
+            throw new IllegalArgumentException("Chosen move cannot be null");
 
-        if (moveAndFlipsCoordinates.isEmpty())
-            throw new IllegalArgumentException("Moves cannot be empty");
+        if (flippedTokens == null || flippedTokens.isEmpty())
+            throw new IllegalArgumentException("Flipped token coordinates cannot be " + (flippedTokens == null ? "null":"empty"));
 
         if (playerID.isEmpty())
             throw new IllegalArgumentException("Player ID cannot be empty");
 
-        Move placement = moveAndFlipsCoordinates.removeFirst();
-        StringBuilder playerTurn = new StringBuilder("r" + placement.row() + "c" + placement.col() + " " + playerID + " ,");
+        StringBuilder playerTurn = new StringBuilder("r" + chosenMove.row() + "c" + chosenMove.col() + " " + playerID + " ,");
 
-        final int noOfMoves = moveAndFlipsCoordinates.size();
+        final int noOfMoves = flippedTokens.size();
         for (int i = 0; i < noOfMoves; i++)
         {
-            Move flip = moveAndFlipsCoordinates.removeFirst();
+            Move flip = flippedTokens.removeFirst();
             playerTurn.append(" r").append(flip.row()).append("c").append(flip.col());
         }
 
