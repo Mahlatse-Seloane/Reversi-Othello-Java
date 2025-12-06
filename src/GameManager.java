@@ -9,11 +9,13 @@ public class GameManager
     private final PlayerType[] players;
     private int currentIndex = 0;
     private PlayerType curPlayer;
+    private final ArrayList<Move> flippedTokens;
     private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
 
     GameManager()
     {
         players = new PlayerType[2];
+        flippedTokens = new ArrayList<>();
     }
 
     public void simulateSingleGame(final int boardSize,final PlayerType p1,final PlayerType p2)
@@ -48,6 +50,7 @@ public class GameManager
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
 
                 consecutivePasses = 0;
+                flippedTokens.clear();
                 availableSpaces--;
             }
             else
@@ -146,6 +149,7 @@ public class GameManager
                 row += dRow;
                 col += dCol;
                 board.setCellContent(row, col, curPToken);
+                flippedTokens.add(new Move(row,col));
             }
         }
     }
