@@ -12,6 +12,10 @@ public class SelectiveAI extends PlayerType
     @Override
     public int chooseMove(final SquareState[][] board,final  Move[] validMoves)
     {
+        BoardValidator.validateBoard(board);
+        if(validMoves == null || validMoves.length == 0)
+            throw new IllegalArgumentException("Valid moves list cannot be null or empty");
+
         collectInformation(board, validMoves);
         return findMaxPossibleCaptures();
     }

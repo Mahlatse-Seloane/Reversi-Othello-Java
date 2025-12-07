@@ -8,10 +8,10 @@ public class GameLogger
             throw new IllegalArgumentException("Chosen move cannot be null");
 
         if (flippedTokens == null || flippedTokens.isEmpty())
-            throw new IllegalArgumentException("Flipped token coordinates cannot be " + (flippedTokens == null ? "null":"empty"));
+            throw new IllegalArgumentException("Flipped token coordinates cannot be null or empty");
 
-        if (playerID.isEmpty())
-            throw new IllegalArgumentException("Player ID cannot be empty");
+        if (playerID == null || playerID.isEmpty())
+            throw new IllegalArgumentException("Player ID cannot be null or empty");
 
         StringBuilder playerTurn = new StringBuilder("r" + chosenMove.row() + "c" + chosenMove.col() + " " + playerID + " ,");
 
@@ -27,8 +27,7 @@ public class GameLogger
 
     public static void printBoard(final SquareState[][] board,final int boardSize)
     {
-        if(board == null)
-            throw new IllegalArgumentException("Board cannot be null");
+        BoardValidator.validateBoard(board);
 
         final int CELL_WIDTH = 3; // Width of each cell’s content area
         final String CELL_FORMAT = "%" + CELL_WIDTH + "s|";

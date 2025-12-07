@@ -30,6 +30,10 @@ public class PlayerType
 
     public int chooseMove(final SquareState[][] board,final Move[] validMoves)
     {
+        BoardValidator.validateBoard(board);
+        if(validMoves == null || validMoves.length == 0)
+            throw new IllegalArgumentException("Valid moves list cannot be null or empty");
+
         Random random = new Random();
         return random.nextInt(0, validMoves.length);
     }
