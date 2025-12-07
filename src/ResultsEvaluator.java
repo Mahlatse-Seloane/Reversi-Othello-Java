@@ -7,7 +7,7 @@ public class ResultsEvaluator
         exceptionChecks(board,p1ID,p1Tok,p2ID,p2Tok);
 
         TokenCount tokenCount = countTokens(board,p1Tok,p2Tok);
-        String gameEndMessage = (endedByConsecutivePasses) ? "Game ended normally": "Players passed turns consecutively";
+        String gameEndMessage = (endedByConsecutivePasses) ? "Players passed turns consecutively" : "Game ended normally";
 
         return new EndResults(tokenCount, determineOutcome(tokenCount,p1ID,p2ID),gameEndMessage);
     }
