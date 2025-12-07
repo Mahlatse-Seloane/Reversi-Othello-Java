@@ -66,6 +66,7 @@ public class GameManager
         System.out.println("\n===================================");
         System.out.println("RESULTS\n");
         EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(),p1.getPlayerID(),p1.getPlayerToken(),p2.getPlayerID(),p2.getPlayerToken(),availableSpaces > 0);
+        GameLogger.logGameResults(results);
     }
 
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
