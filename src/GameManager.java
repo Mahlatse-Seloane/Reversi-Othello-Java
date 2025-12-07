@@ -33,6 +33,7 @@ public class GameManager
         selectStartingPlayer();
         initializeBoard(boardSize);
 
+        System.out.println("STARTING CONFIGURATION");
         System.out.println("Board size: " + boardSize + " x " + boardSize);
         GameLogger.printBoard(board.peekBoard(),curBoardSize);
 
@@ -61,6 +62,10 @@ public class GameManager
 
             alternatingTurns();
         }
+
+        System.out.println("\n===================================");
+        System.out.println("RESULTS\n");
+        EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(),p1.getPlayerID(),p1.getPlayerToken(),p2.getPlayerID(),p2.getPlayerToken(),availableSpaces > 0);
     }
 
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
@@ -103,11 +108,11 @@ public class GameManager
     private Move chooseMove(final Move[] validMoves)
     {
         if(validMoves == null || validMoves.length == 0)
-            throw new IllegalArgumentException("Valid moves list cannot be " + (validMoves == null ? "null":"empty"));
+            throw new IllegalArgumentException("Valid moves list cannot be null or empty");
 
         final int maxValidMoves = validMoves.length;
 
-        final int chosenMoveIndex = curPlayer.chooseMove(validMoves);
+        final int chosenMoveIndex = curPlayer.chooseMove(board.peekBoard(),validMoves);
         if(chosenMoveIndex < 0 || chosenMoveIndex > maxValidMoves)
             throw new IndexOutOfBoundsException("Chosen move index: " + chosenMoveIndex + " is out of bounds.");
 
@@ -157,6 +162,9 @@ public class GameManager
 
    private void alternatingTurns()
    {
+       if(currentIndex < 0 || currentIndex > 1)
+           currentIndex = 0;
+
        currentIndex = 1 - currentIndex;
        curPlayer = players[currentIndex];
    }
