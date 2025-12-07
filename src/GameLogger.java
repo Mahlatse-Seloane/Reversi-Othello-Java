@@ -25,6 +25,18 @@ public class GameLogger
         System.out.println(playerTurn);
     }
 
+    public static void logGameResults(final EndResults results)
+    {
+        if(results == null)
+            throw new IllegalArgumentException("Results cannot be null");
+
+        System.out.println("alg1 = " + results.tokenCount().p1());
+        System.out.println("alg2 = " + results.tokenCount().p2());
+        System.out.println("win = " + results.winner());
+        System.out.println("Reason: " + results.reason());
+        System.out.println();
+    }
+
     public static void printBoard(final SquareState[][] board,final int boardSize)
     {
         BoardValidator.validateBoard(board);
