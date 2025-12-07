@@ -7,7 +7,7 @@ public class MoveInspector
 
     public static Move[] findValidMoves(final SquareState[][] board, final SquareState curPToken)
     {
-        boardRequirementsCheck(board);
+        BoardValidator.validateBoard(board);
         final int boardSize = board.length;
         ArrayList<Move> validMoves = new ArrayList<>();
 
@@ -15,7 +15,7 @@ public class MoveInspector
         {
             for (int col = 0; col < boardSize; col++)
             {
-                boundsCheck(boardSize,row,col);
+                BoardValidator.validateBounds(boardSize,row,col);
                 if (board[row][col] == SquareState.EMPTY)
                 {
                     int noOfFlips = 0;
@@ -145,34 +145,10 @@ public class MoveInspector
 
     private static int countFlipsInDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, int dRow, int dCol)
     {
-        boardRequirementsCheck(board);
-        boundsCheck(board.length, row, col);
+        BoardValidator.validateBoard(board);
+        BoardValidator.validateBounds(board.length, row, col);
+
         return countFlippableTokens(board, curPToken, row, col, dRow, dCol);
-    }
-
-
-    private static void boardRequirementsCheck(final SquareState[][] board)
-    {
-        if (board == null)
-            throw new IllegalArgumentException("Board cannot be null");
-
-        final int boardSize = board.length;
-        for (SquareState[] row : board)
-        {
-            if (row == null)
-                throw new IllegalArgumentException("Board rows cannot be null");
-
-            if (row.length != boardSize)
-                throw new IllegalArgumentException("Board must be square");
-        }
-    }
-
-    public static void boundsCheck(final int boardSize,int row,int col)
-    {
-        if (row < 0 || row >= boardSize)
-            throw new IndexOutOfBoundsException("Row: " + row + " is out the bounds.");
-        if (col < 0 || col >= boardSize)
-            throw new IndexOutOfBoundsException("Col: " + col + " is out the bounds.");
     }
 
     private static int countFlippableTokens(final SquareState[][] board,final SquareState curPToken,int row,int col,final int dRow,final int dCol)
