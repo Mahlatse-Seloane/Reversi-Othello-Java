@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class HumanPlayer extends PlayerType
 {
     public HumanPlayer()
@@ -11,23 +9,11 @@ public class HumanPlayer extends PlayerType
     public int chooseMove(final SquareState[][] board,final Move[] moves)
     {
         int totalMoves = moves.length;
-        StringBuilder options = new StringBuilder("Your options:");
+        StringBuilder prompt = new StringBuilder("Your options:");
         for(int i = 0; i < totalMoves; i++)
-            options.append(String.format("\n%s. row: %s col: %s",(i+1),moves[i].row(),moves[i].col()));
+            prompt.append(String.format("\n%s. row: %d col: %d",(i+1),moves[i].row(),moves[i].col()));
 
-        System.out.println(options);
-        Scanner scanner = new Scanner(System.in);
-
-        String prompt = "Select a move (" + 1 + "-" + totalMoves + "): ";
-        int chosenMove;
-
-        do
-        {
-            System.out.print(prompt);
-            chosenMove = scanner.nextInt();
-        }
-        while(chosenMove < 1 || chosenMove > totalMoves);
-
-        return chosenMove - 1;
+        prompt.append(String.format("\n\nSelect a move (%d - %d): " ,1,totalMoves));
+        return InputValidator.ReadInt(prompt.toString(),1,totalMoves) - 1;
     }
 }
