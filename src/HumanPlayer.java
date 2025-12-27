@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class HumanPlayer extends PlayerType
 {
     private static int humanNum = 0;
@@ -19,7 +17,7 @@ public class HumanPlayer extends PlayerType
             prompt.append(String.format("\n%s. row: %d col: %d",(i+1),moves[i].row(),moves[i].col()));
 
         prompt.append(String.format("\n\nSelect a move (%d - %d): " ,1,totalMoves));
-        return InputValidator.ReadInt(prompt.toString(),1,totalMoves) - 1;
+        return InputValidator.readInt(prompt.toString(),1,totalMoves) - 1;
     }
 
     public void setCustomPlayerID()
@@ -33,7 +31,7 @@ public class HumanPlayer extends PlayerType
                 
                 Select an option:\u00A0""";
 
-        boolean customize = (InputValidator.ReadInt(prompt, 1, 2) == 2);
+        boolean customize = (InputValidator.readInt(prompt, 1, 2) == 2);
         System.out.println();
 
         if (customize)
@@ -41,16 +39,14 @@ public class HumanPlayer extends PlayerType
             boolean nameConfirmed;
             do
             {
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("Enter custom name: ");
-                name = scanner.nextLine().trim();
+                name = InputValidator.readString("Enter custom name: ", "");
                 String proceedPrompt = String.format("""
                                              1. Confirm custom name: %s
                                              2. Re-enter
                         
                                              Select an option:\u00A0""", name);
 
-                nameConfirmed = InputValidator.ReadInt(proceedPrompt, 1, 2) == 1;
+                nameConfirmed = InputValidator.readInt(proceedPrompt, 1, 2) == 1;
                 System.out.println();
             }
             while (!nameConfirmed);
