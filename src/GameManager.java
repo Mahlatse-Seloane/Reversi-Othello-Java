@@ -76,10 +76,23 @@ public class GameManager
 
     private void assignPlayersIDsAndTokens()
     {
-        players[0].setPlayerID("alg1");
-        players[0].setPlayerToken(SquareState.WHITE);
+        int index = 1;
+        for(PlayerType player : players)
+        {
+            if (player.getPlayerID().trim().isEmpty())
+            {
+                player.setPlayerID("alg " + (index));
+                index++;
+            }
+        }
 
-        players[1].setPlayerID("alg2");
+        if(players[0].getPlayerID().equals(players[1].getPlayerID()))
+        {
+            players[0].setPlayerID(players[0].getPlayerID() + " " + 1);
+            players[1].setPlayerID(players[1].getPlayerID() + " " + 2);
+        }
+
+        players[0].setPlayerToken(SquareState.WHITE);
         players[1].setPlayerToken(SquareState.BLACK);
     }
 
