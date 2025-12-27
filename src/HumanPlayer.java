@@ -1,8 +1,13 @@
+import java.util.Scanner;
+
 public class HumanPlayer extends PlayerType
 {
+    private static int humanNum = 0;
+
     public HumanPlayer()
     {
-        setPlayerID("Human Player");
+        humanNum++;
+        setCustomPlayerID();
     }
 
     @Override
@@ -15,5 +20,42 @@ public class HumanPlayer extends PlayerType
 
         prompt.append(String.format("\n\nSelect a move (%d - %d): " ,1,totalMoves));
         return InputValidator.ReadInt(prompt.toString(),1,totalMoves) - 1;
+    }
+
+    public void setCustomPlayerID()
+    {
+        String name = String.format("Player %d", humanNum);
+
+        String prompt ="""
+                Do you want to set a custom name?
+                1. No
+                2. Yes
+                
+                Select an option:\u00A0""";
+
+        boolean customize = (InputValidator.ReadInt(prompt, 1, 2) == 2);
+        System.out.println();
+
+        if (customize)
+        {
+            boolean nameConfirmed;
+            do
+            {
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Enter custom name: ");
+                name = scanner.nextLine().trim();
+                String proceedPrompt = String.format("""
+                                             1. Confirm custom name: %s
+                                             2. Re-enter
+                        
+                                             Select an option:\u00A0""", name);
+
+                nameConfirmed = InputValidator.ReadInt(proceedPrompt, 1, 2) == 1;
+                System.out.println();
+            }
+            while (!nameConfirmed);
+        }
+
+        setPlayerID(name);
     }
 }
