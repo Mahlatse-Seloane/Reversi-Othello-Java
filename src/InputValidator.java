@@ -7,7 +7,7 @@ public class InputValidator
 
     private InputValidator() {}
 
-    public static int ReadInt(final String prompt,final int minRange,final int maxRange)
+    public static int readInt(final String prompt,final int minRange,final int maxRange)
     {
         boolean inputValid = false;
         int tempInput = 0;
@@ -40,5 +40,35 @@ public class InputValidator
         while (!inputValid);
 
         return tempInput;
+    }
+
+    public static String readString(final String prompt,final String expectedString)
+    {
+        boolean inputValid = false;
+        String line;
+
+        do
+        {
+            System.out.print(prompt);
+            line = scanner.nextLine().trim();
+
+            if (!expectedString.isBlank())
+            {
+                if (line.equals(expectedString))
+                    inputValid = true;
+                else
+                    System.out.println("Error: Invalid input. Your entry does not match the expected input.\n");
+            }
+            else
+            {
+                if (!line.isBlank())
+                    inputValid = true;
+                else
+                    System.out.println("Error: Invalid input. Your entry is blank/empty.\n");
+            }
+        }
+        while (!inputValid);
+
+        return line;
     }
 }
