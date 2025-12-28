@@ -2,119 +2,32 @@ public class MoveInspector
 {
     private MoveInspector(){}
 
-    /**
-     * Counts how many opponent pieces can be flipped upward from the given cell.
+    /** Counts how many opponent pieces can be flipped in a given direction starting from the given cell.
      *
      * @param board The current board state
-     * @param curPToken The token of the player making a move
      * @param row Starting row
      * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countUpFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, -1, 0);
-    }
-
-    /**
-     * Counts how many opponent pieces can be flipped diagonally up right from the given cell.
-     *
-     * @param board The current board state
+     * @param dir The given direction
      * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
      * @return Number of pieces flippable in the given direction
      */
-    public static int countDiagonalUpRightFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
+    public static int countFlipsInDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, final int dir)
     {
-        return countFlipsInDirection(board, curPToken, row, col, -1, 1);
+        return switch (dir)
+        {
+            case 1 -> countFlipsAlongDirection(board, curPToken, row, col, -1, 0);
+            case 2 -> countFlipsAlongDirection(board, curPToken, row, col, -1, 1);
+            case 3 -> countFlipsAlongDirection(board, curPToken, row, col, 0, 1);
+            case 4 -> countFlipsAlongDirection(board, curPToken, row, col, 1, 1);
+            case 5 -> countFlipsAlongDirection(board, curPToken, row, col, 1, 0);
+            case 6 -> countFlipsAlongDirection(board, curPToken, row, col, 1, -1);
+            case 7 -> countFlipsAlongDirection(board, curPToken, row, col, 0, -1);
+            case 8 -> countFlipsAlongDirection(board, curPToken, row, col, -1, -1);
+            default -> throw new IllegalStateException("Unexpected value: " + dir);
+        };
     }
 
-    /**
-     * Counts how many opponent pieces can be flipped right from the given cell.
-     *
-     * @param board The current board state
-     * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countRightFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, 0, 1);
-    }
-
-    /**
-     * Counts how many opponent pieces can be flipped diagonally down right from the given cell.
-     *
-     * @param board The current board state
-     * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countDiagonalDownRightFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, 1, 1);
-    }
-
-    /**
-     * Counts how many opponent pieces can be flipped downward from the given cell.
-     *
-     * @param board The current board state
-     * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countDownFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, 1, 0);
-    }
-
-    /**
-     * Counts how many opponent pieces can be flipped diagonally down left from the given cell.
-     *
-     * @param board The current board state
-     * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countDiagonalDownLeftFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, 1, -1);
-    }
-
-    /**
-     * Counts how many opponent pieces can be flipped left from the given cell.
-     *
-     * @param board The current board state
-     * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countLeftFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, 0, -1);
-    }
-
-    /**
-     * Counts how many opponent pieces can be flipped diagonally up left from the given cell.
-     *
-     * @param board The current board state
-     * @param curPToken The token of the player making a move
-     * @param row Starting row
-     * @param col Starting column
-     * @return Number of pieces flippable in the given direction
-     */
-    public static int countDiagonalUpLeftFlips(final SquareState[][] board,final SquareState curPToken,int row,int col)
-    {
-        return countFlipsInDirection(board, curPToken, row, col, -1, -1);
-    }
-
-    private static int countFlipsInDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, int dRow, int dCol)
+    private static int countFlipsAlongDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, int dRow, int dCol)
     {
         BoardValidator.validateBoard(board);
         BoardValidator.validateBounds(board.length, row, col);
