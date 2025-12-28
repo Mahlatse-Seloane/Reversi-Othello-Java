@@ -1,35 +1,6 @@
-import java.util.ArrayList;
-
 public class MoveInspector
 {
-    private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
     private MoveInspector(){}
-
-    public static Move[] findValidMoves(final SquareState[][] board, final SquareState curPToken)
-    {
-        BoardValidator.validateBoard(board);
-        final int boardSize = board.length;
-        ArrayList<Move> validMoves = new ArrayList<>();
-
-        for (int row = 0; row < boardSize; row++)
-        {
-            for (int col = 0; col < boardSize; col++)
-            {
-                BoardValidator.validateBounds(boardSize,row,col);
-                if (board[row][col] == SquareState.EMPTY)
-                {
-                    int noOfFlips = 0;
-                    for(int i = 0; i < 8; i++)
-                        noOfFlips += countFlippableTokens(board,curPToken,row,col,dir[i][0],dir[i][1]);
-
-                    if (noOfFlips > 0)
-                        validMoves.add(new Move(row,col));
-                }
-            }
-        }
-
-        return validMoves.toArray(Move[]::new);
-    }
 
     /**
      * Counts how many opponent pieces can be flipped upward from the given cell.
