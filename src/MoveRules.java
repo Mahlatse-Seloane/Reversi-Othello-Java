@@ -21,8 +21,8 @@ public class MoveRules
                 if (board[row][col] == SquareState.EMPTY)
                 {
                     int noOfFlips = 0;
-                    for(int i = 0; i < 8; i++)
-                        noOfFlips += MoveInspector.countFlipsInDirection(board, curPToken, row, col, i);
+                    for (Direction dir : Direction.values())
+                        noOfFlips += MoveInspector.countFlipsInDirection(board, curPToken, row, col, dir);
 
                     if (noOfFlips > 0)
                         validMoves.add(new Move(row,col));
@@ -40,17 +40,15 @@ public class MoveRules
 
         ArrayList<Move> capturedTokens = new ArrayList<>();
 
-        for(int i = 0; i < 8; i++)
+        for (Direction dir : Direction.values())
         {
             int row = chosenMove.row(), col = chosenMove.col();
-            int dRow = dir[i][0], dCol = dir[i][1];
-
-            int maxSteps = MoveInspector.countFlipsInDirection(board, curPToken, row, col, i);
+            int maxSteps = MoveInspector.countFlipsInDirection(board, curPToken, row, col, dir);
 
             for (int j = 0; j < maxSteps; j++)
             {
-                row += dRow;
-                col += dCol;
+                row += dir.getRowDelta();
+                col += dir.getColDelta();
                 capturedTokens.add(new Move(row,col));
             }
         }

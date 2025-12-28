@@ -11,33 +11,33 @@ public class MoveInspector
      * @param curPToken The token of the player making a move
      * @return Number of pieces flippable in the given direction
      */
-    public static int countFlipsInDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, final int dir)
+    public static int countFlipsInDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, final Direction dir)
     {
         return switch (dir)
         {
-            case 1 -> countFlipsAlongDirection(board, curPToken, row, col, -1, 0);
-            case 2 -> countFlipsAlongDirection(board, curPToken, row, col, -1, 1);
-            case 3 -> countFlipsAlongDirection(board, curPToken, row, col, 0, 1);
-            case 4 -> countFlipsAlongDirection(board, curPToken, row, col, 1, 1);
-            case 5 -> countFlipsAlongDirection(board, curPToken, row, col, 1, 0);
-            case 6 -> countFlipsAlongDirection(board, curPToken, row, col, 1, -1);
-            case 7 -> countFlipsAlongDirection(board, curPToken, row, col, 0, -1);
-            case 8 -> countFlipsAlongDirection(board, curPToken, row, col, -1, -1);
-            default -> throw new IllegalStateException("Unexpected value: " + dir);
+            case Direction.UP -> countFlipsAlongDirection(board, curPToken, row, col, Direction.UP);
+            case Direction.DIAGONAL_UP_RIGHT -> countFlipsAlongDirection(board, curPToken, row, col, Direction.DIAGONAL_UP_RIGHT);
+            case Direction.RIGHT -> countFlipsAlongDirection(board, curPToken, row, col, Direction.RIGHT);
+            case Direction.DIAGONAL_DOWN_RIGHT -> countFlipsAlongDirection(board, curPToken, row, col, Direction.DIAGONAL_DOWN_RIGHT);
+            case Direction.DOWN -> countFlipsAlongDirection(board, curPToken, row, col, Direction.DOWN);
+            case Direction.DIAGONAL_DOWN_LEFT -> countFlipsAlongDirection(board, curPToken, row, col, Direction.DIAGONAL_DOWN_LEFT);
+            case Direction.LEFT -> countFlipsAlongDirection(board, curPToken, row, col, Direction.LEFT);
+            case Direction.DIAGONAL_UP_LEFT -> countFlipsAlongDirection(board, curPToken, row, col, Direction.DIAGONAL_UP_LEFT);
         };
     }
 
-    private static int countFlipsAlongDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, int dRow, int dCol)
+    private static int countFlipsAlongDirection(final SquareState[][] board, final SquareState curPToken, int row, int col, final Direction dir)
     {
         BoardValidator.validateBoard(board);
         BoardValidator.validateBounds(board.length, row, col);
 
-        return countFlippableTokens(board, curPToken, row, col, dRow, dCol);
+        return countFlippableTokens(board, curPToken, row, col, dir);
     }
 
-    private static int countFlippableTokens(final SquareState[][] board,final SquareState curPToken,int row,int col,final int dRow,final int dCol)
+    private static int countFlippableTokens(final SquareState[][] board,final SquareState curPToken,int row,int col,final Direction dir)
     {
         final int boardSize = board.length;
+        final int dRow = dir.getRowDelta(), dCol = dir.getColDelta();
         final int maxStep = calcMaxSteps(boardSize, row, col, dRow, dCol);
 
         if (maxStep < 2)
@@ -47,7 +47,7 @@ public class MoveInspector
         if (cell == curPToken || cell == SquareState.EMPTY)
             return 0;
 
-        return noOfPossibleFlips(board, curPToken, maxStep, row, col, dRow, dCol);
+        return noOfPossibleFlips(board, curPToken, maxStep, row, col, dir);
     }
 
     private static int calcMaxSteps(final int boardSize, int row, int col, final int dRow, final int dCol)
@@ -65,12 +65,12 @@ public class MoveInspector
         return maxSteps;
     }
 
-    private static int noOfPossibleFlips(final SquareState[][] board, final SquareState curPToken, final int maxSteps, int row, int col, final int dRow, final int dCol)
+    private static int noOfPossibleFlips(final SquareState[][] board, final SquareState curPToken, final int maxSteps, int row, int col, final Direction dir)
     {
         for (int i = 0; i < maxSteps; i++)
         {
-            row += dRow;
-            col += dCol;
+            row += dir.getRowDelta();
+            col += dir.getColDelta();
             final SquareState cell = board[row][col];
 
             if (cell == curPToken)
