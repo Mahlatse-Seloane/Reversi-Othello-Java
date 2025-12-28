@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class GameManager
@@ -9,13 +10,10 @@ public class GameManager
     private final PlayerType[] players;
     private int currentIndex = 0;
     private PlayerType curPlayer;
-    private final ArrayList<Move> flippedTokens;
-    private static final int[][] dir = {{-1, 0},{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1}};
 
     GameManager()
     {
         players = new PlayerType[2];
-        flippedTokens = new ArrayList<>();
     }
 
     public void simulateSingleGame(final int boardSize,final PlayerType p1,final PlayerType p2)
@@ -45,14 +43,13 @@ public class GameManager
             {
                 Move chosenMove = chooseMove(validMoves);
                 applyMove(chosenMove);
-                flipCapturedTokens(chosenMove);
+                Move[] flippedTokens = flipCapturedTokens(chosenMove);
 
                 System.out.println("\n===================================\n");
-                GameLogger.logMoves(chosenMove,flippedTokens,curPlayer.getPlayerID());
+                GameLogger.logMoves(chosenMove,new ArrayList<>(Arrays.asList(flippedTokens)),curPlayer.getPlayerID());
                 GameLogger.printBoard(board.peekBoard(), curBoardSize);
 
                 consecutivePasses = 0;
-                flippedTokens.clear();
                 availableSpaces--;
             }
             else
@@ -141,37 +138,18 @@ public class GameManager
         board.setCellContent(chosenMove.row(),chosenMove.col(), curPlayer.getPlayerToken());
     }
 
-    private void flipCapturedTokens(final Move chosenMove)
+    private Move[] flipCapturedTokens(final Move chosenMove)
     {
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
 
         SquareState curPToken = curPlayer.getPlayerToken();
-        for(int i = 0; i < 8; i++)
-        {
-            int row = chosenMove.row(), col = chosenMove.col();
-            int dRow = dir[i][0], dCol = dir[i][1];
-            int maxSteps = switch (i)
-            {
-                case 0 -> MoveInspector.countUpFlips(board.peekBoard(),curPToken,row,col);
-                case 1 -> MoveInspector.countDiagonalUpRightFlips(board.peekBoard(),curPToken,row,col);
-                case 2 -> MoveInspector.countRightFlips(board.peekBoard(),curPToken,row,col);
-                case 3 -> MoveInspector.countDiagonalDownRightFlips(board.peekBoard(),curPToken,row,col);
-                case 4 -> MoveInspector.countDownFlips(board.peekBoard(),curPToken,row,col);
-                case 5 -> MoveInspector.countDiagonalDownLeftFlips(board.peekBoard(),curPToken,row,col);
-                case 6 -> MoveInspector.countLeftFlips(board.peekBoard(),curPToken,row,col);
-                case 7 -> MoveInspector.countDiagonalUpLeftFlips(board.peekBoard(),curPToken,row,col);
-                default -> throw new IllegalStateException("Unexpected value: " + i);
-            };
+        Move[] capturedTokens = MoveRules.findCapturedTokens(board.peekBoard(), chosenMove, curPToken);
 
-            for (int j = 0; j < maxSteps; j++)
-            {
-                row += dRow;
-                col += dCol;
-                board.setCellContent(row, col, curPToken);
-                flippedTokens.add(new Move(row,col));
-            }
-        }
+        for (Move capturedToken: capturedTokens)
+            board.setCellContent(capturedToken.row(), capturedToken.col(), curPToken);
+
+        return capturedTokens;
     }
 
    private void alternatingTurns()
