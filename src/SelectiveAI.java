@@ -50,14 +50,8 @@ public class SelectiveAI extends PlayerType
             possibleCaptures[i][0] = row;
             possibleCaptures[i][1] = col;
 
-            possibleCaptures[i][2] = MoveInspector.countUpFlips(board, getPlayerToken(), row, col); //Up
-            possibleCaptures[i][3] = MoveInspector.countDiagonalUpRightFlips(board, getPlayerToken(), row, col); // Up-Right
-            possibleCaptures[i][4] = MoveInspector.countRightFlips(board, getPlayerToken(), row, col); // Right
-            possibleCaptures[i][5] = MoveInspector.countDiagonalDownRightFlips(board, getPlayerToken(), row, col); // Down-Right
-            possibleCaptures[i][6] = MoveInspector.countDownFlips(board, getPlayerToken(), row, col); //Down
-            possibleCaptures[i][7] = MoveInspector.countDiagonalDownLeftFlips(board, getPlayerToken(), row, col); // Down-Left
-            possibleCaptures[i][8] = MoveInspector.countLeftFlips(board, getPlayerToken(), row, col); // Left
-            possibleCaptures[i][9] = MoveInspector.countDiagonalUpLeftFlips(board, getPlayerToken(), row, col); // Up-Left
+            for(int j = 1; j <= 8; j++)
+                possibleCaptures[i][j+1] = MoveInspector.countFlipsInDirection(board, getPlayerToken(), row, col, j);
         }
     }
 }

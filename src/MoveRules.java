@@ -22,20 +22,7 @@ public class MoveRules
                 {
                     int noOfFlips = 0;
                     for(int i = 0; i < 8; i++)
-                    {
-                        noOfFlips += switch (i)
-                        {
-                            case 0 -> MoveInspector.countUpFlips(board,curPToken,row,col);
-                            case 1 -> MoveInspector.countDiagonalUpRightFlips(board,curPToken,row,col);
-                            case 2 -> MoveInspector.countRightFlips(board,curPToken,row,col);
-                            case 3 -> MoveInspector.countDiagonalDownRightFlips(board,curPToken,row,col);
-                            case 4 -> MoveInspector.countDownFlips(board,curPToken,row,col);
-                            case 5 -> MoveInspector.countDiagonalDownLeftFlips(board,curPToken,row,col);
-                            case 6 -> MoveInspector.countLeftFlips(board,curPToken,row,col);
-                            case 7 -> MoveInspector.countDiagonalUpLeftFlips(board,curPToken,row,col);
-                            default -> throw new IllegalStateException("Unexpected value: " + i);
-                        };
-                    }
+                        noOfFlips += MoveInspector.countFlipsInDirection(board, curPToken, row, col, i);
 
                     if (noOfFlips > 0)
                         validMoves.add(new Move(row,col));
@@ -58,18 +45,7 @@ public class MoveRules
             int row = chosenMove.row(), col = chosenMove.col();
             int dRow = dir[i][0], dCol = dir[i][1];
 
-            int maxSteps = switch (i)
-            {
-                case 0 -> MoveInspector.countUpFlips(board,curPToken,row,col);
-                case 1 -> MoveInspector.countDiagonalUpRightFlips(board,curPToken,row,col);
-                case 2 -> MoveInspector.countRightFlips(board,curPToken,row,col);
-                case 3 -> MoveInspector.countDiagonalDownRightFlips(board,curPToken,row,col);
-                case 4 -> MoveInspector.countDownFlips(board,curPToken,row,col);
-                case 5 -> MoveInspector.countDiagonalDownLeftFlips(board,curPToken,row,col);
-                case 6 -> MoveInspector.countLeftFlips(board,curPToken,row,col);
-                case 7 -> MoveInspector.countDiagonalUpLeftFlips(board,curPToken,row,col);
-                default -> throw new IllegalStateException("Unexpected value: " + i);
-            };
+            int maxSteps = MoveInspector.countFlipsInDirection(board, curPToken, row, col, i);
 
             for (int j = 0; j < maxSteps; j++)
             {
