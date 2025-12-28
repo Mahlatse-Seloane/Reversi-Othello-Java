@@ -40,7 +40,7 @@ public class GameManager
         int consecutivePasses = 0;
         while(availableSpaces > 0 && consecutivePasses < 2)
         {
-            Move[] validMoves = MoveInspector.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
+            Move[] validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
             if(validMoves.length > 0)
             {
                 Move chosenMove = chooseMove(validMoves);
