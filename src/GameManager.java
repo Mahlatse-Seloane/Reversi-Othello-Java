@@ -47,7 +47,7 @@ public class GameManager
 
                 System.out.println("\n===================================\n");
                 GameLogger.logMoves(chosenMove,new ArrayList<>(Arrays.asList(flippedTokens)),curPlayer.getPlayerID());
-                GameLogger.printBoard(board.peekBoard(), curBoardSize);
+                GameLogger.printBoard(board.peekBoard(), curBoardSize, chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
 
                 consecutivePasses = 0;
                 availableSpaces--;
@@ -141,7 +141,7 @@ public class GameManager
     private Move[] flipCapturedTokens(final Move chosenMove)
     {
         if(chosenMove == null)
-            throw new IllegalArgumentException("Chosen move cannot be null");
+            return new Move[0];
 
         SquareState curPToken = curPlayer.getPlayerToken();
         Move[] capturedTokens = MoveRules.findCapturedTokens(board.peekBoard(), chosenMove, curPToken);
