@@ -33,25 +33,28 @@ public class GameManager
 
         System.out.println("STARTING CONFIGURATION");
         System.out.println("Board size: " + boardSize + " x " + boardSize);
+        System.out.println();
         GameLogger.printBoard(board.peekBoard(),curBoardSize);
 
         int consecutivePasses = 0;
+        Move chosenMove = null;
+        Move[] flippedTokens = new Move[0];
+
         while(availableSpaces > 0 && consecutivePasses < 2)
         {
             Move[] validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
 
+            System.out.println("===================================\n");
+            GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
+            GameLogger.printBoard(board.peekBoard(), boardSize, new ArrayList<>(Arrays.asList(validMoves)), chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
+            chosenMove = null;
+            flippedTokens = new Move[0];
+
             if(validMoves.length > 0)
             {
-                System.out.println("\n===================================");
-                GameLogger.printBoard(board.peekBoard(), curBoardSize, new ArrayList<>(Arrays.asList(validMoves)));
-
-                Move chosenMove = chooseMove(validMoves);
+                chosenMove = chooseMove(validMoves);
                 applyMove(chosenMove);
-                Move[] flippedTokens = flipCapturedTokens(chosenMove);
-
-                System.out.println();
-                GameLogger.logMoves(chosenMove,new ArrayList<>(Arrays.asList(flippedTokens)),curPlayer.getPlayerID());
-                GameLogger.printBoard(board.peekBoard(), curBoardSize, chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
+                flippedTokens = flipCapturedTokens(chosenMove);
 
                 consecutivePasses = 0;
                 availableSpaces--;
@@ -64,7 +67,7 @@ public class GameManager
             alternatingTurns();
         }
 
-        System.out.println("\n===================================");
+        System.out.println("===================================");
         System.out.println("RESULTS\n");
         EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(),p1.getPlayerID(),p1.getPlayerToken(),p2.getPlayerID(),p2.getPlayerToken(),availableSpaces > 0);
         GameLogger.logGameResults(results);
