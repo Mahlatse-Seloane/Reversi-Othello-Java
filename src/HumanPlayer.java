@@ -37,6 +37,15 @@ public class HumanPlayer extends PlayerType
         return index;
     }
 
+    @Override
+    public void passTurn()
+    {
+        String prompt = "No valid moves available. Press ENTER to pass your turn.";
+        String errorMessage = "Please press ENTER only to pass the turn.";
+        InputValidator.readEnter(prompt, errorMessage);
+        System.out.println();
+    }
+
     public void setCustomPlayerID()
     {
         String name = String.format("Player %d", humanNum);
