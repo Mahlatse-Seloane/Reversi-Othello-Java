@@ -37,4 +37,6 @@ public class PlayerType
         Random random = new Random();
         return random.nextInt(0, validMoves.length);
     }
+
+    public void passTurn() {}
 }
