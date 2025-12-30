@@ -29,6 +29,7 @@ public class GameLogger
         }
 
         System.out.println(playerTurn);
+        System.out.println();
     }
 
     public static void logGameResults(final EndResults results)
@@ -58,6 +59,11 @@ public class GameLogger
         render(board, boardSize, new ArrayList<>(validMoves), null, null);
     }
 
+    public static void printBoard(final SquareState[][] board, final int boardSize, final ArrayList<Move> validMoves, final Move chosenMove, final ArrayList<Move> flippedTokens)
+    {
+        render(board, boardSize, new ArrayList<>(validMoves), chosenMove, new ArrayList<>(flippedTokens));
+    }
+
     private static void render(final SquareState[][] board, final int boardSize, final ArrayList<Move> validMoves, final Move chosenMove, final ArrayList<Move> flippedTokens)
     {
         BoardValidator.validateBoard(board);
@@ -68,7 +74,6 @@ public class GameLogger
         final String colHeaders = buildColumnHeaders(boardSize);
         final String separator = buildSeparator(boardSize);
 
-        System.out.println(); // Newline before printing board
         System.out.println("   " + colHeaders);// Printing for column headers
         System.out.println("   " + separator); //Printing the separator with offset at beginning to align with header
 
@@ -99,13 +104,15 @@ public class GameLogger
             System.out.println(rowBuilder);
             System.out.println("   " + separator);
         }
+
+        System.out.println();
     }
 
     private static String cellContents(final SquareState[][] board, final int row, final int col)
     {
         return switch (board[row][col])
         {
-            case SquareState.EMPTY -> " ";
+            case SquareState.EMPTY -> "   ";
             case SquareState.WHITE -> " W ";
             case SquareState.BLACK -> " B ";
         };
