@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class HumanPlayer extends PlayerType
 {
     private static int humanNum = 0;
@@ -9,15 +11,44 @@ public class HumanPlayer extends PlayerType
     }
 
     @Override
-    public int chooseMove(final SquareState[][] board,final Move[] moves)
+    public int chooseMove(final SquareState[][] board,final Move[] validMoves)
     {
-        int totalMoves = moves.length;
-        StringBuilder prompt = new StringBuilder("Your options:");
-        for(int i = 0; i < totalMoves; i++)
-            prompt.append(String.format("\n%s. row: %d col: %d",(i+1),moves[i].row(),moves[i].col()));
+        if(validMoves == null || validMoves.length == 0)
+            throw new IllegalArgumentException("Valid moves list cannot be null or empty");
 
-        prompt.append(String.format("\n\nSelect a move (%d - %d): " ,1,totalMoves));
-        return InputValidator.readInt(prompt.toString(),1,totalMoves) - 1;
+        int totalMoves = validMoves.length;
+
+        String prompt;
+        int index = 0;
+
+        if (totalMoves == 1)
+        {
+            System.out.println();
+            boolean inputValid = false;
+
+            do
+            {
+                System.out.print("Move\u001B[95m 1 \u001B[0mis the only available move. Press ENTER to play the move.");
+                Scanner scanner = new Scanner(System.in);
+
+                String line = scanner.nextLine().trim();
+                if (line.isBlank())
+                    inputValid = true;
+                else
+                    System.out.println("Error: Invalid input. Press ENTER without typing anything.\n");
+
+            }
+            while (!inputValid);
+        }
+        else
+        {
+            String range = String.format("%d - %d", 1, totalMoves);
+            index = InputValidator.readInt("Select a move (\u001B[95m" + range + "\u001B[0m): ", 1, totalMoves) - 1;
+        }
+
+        System.out.println();
+
+        return index;
     }
 
     public void setCustomPlayerID()
