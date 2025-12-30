@@ -18,27 +18,13 @@ public class HumanPlayer extends PlayerType
 
         int totalMoves = validMoves.length;
 
-        String prompt;
-        int index = 0;
-
+        int index;
         if (totalMoves == 1)
         {
-            System.out.println();
-            boolean inputValid = false;
-
-            do
-            {
-                System.out.print("Move\u001B[95m 1 \u001B[0mis the only available move. Press ENTER to play the move.");
-                Scanner scanner = new Scanner(System.in);
-
-                String line = scanner.nextLine().trim();
-                if (line.isBlank())
-                    inputValid = true;
-                else
-                    System.out.println("Error: Invalid input. Press ENTER without typing anything.\n");
-
-            }
-            while (!inputValid);
+            String prompt = "Move\u001B[95m 1 \u001B[0mis the only available move. Press ENTER to play the move.";
+            String errorMessage = "Please press ENTER only to play the move.";
+            InputValidator.readEnter(prompt, errorMessage);
+            index = 0;
         }
         else
         {
