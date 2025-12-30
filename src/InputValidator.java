@@ -57,7 +57,7 @@ public class InputValidator
                 if (line.equals(expectedString))
                     inputValid = true;
                 else
-                    System.out.println("Error: Invalid input. Your entry does not match the expected input.\n");
+                    System.out.println("Error: Invalid input. Your entry does not match the expected input: " + expectedString +  " \n");
             }
             else
             {
@@ -70,5 +70,22 @@ public class InputValidator
         while (!inputValid);
 
         return line;
+    }
+
+    public static void readEnter(final String prompt, final String ErrorMessage)
+    {
+        System.out.println();
+        boolean inputValid = false;
+
+        System.out.print(prompt);
+        do
+        {
+            String line = scanner.nextLine().trim();
+            if (line.isBlank())
+                inputValid = true;
+            else
+                System.out.print("Error: Invalid input. " + ErrorMessage);
+        }
+        while (!inputValid);
     }
 }
