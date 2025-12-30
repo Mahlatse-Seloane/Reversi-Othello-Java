@@ -52,8 +52,8 @@ public class GameLogger
         final String separator = buildSeparator(boardSize);
 
         System.out.println(); // Newline before printing board
-        System.out.println(" " + colHeaders);// Printing for column headers
-        System.out.println(" " + separator); //Printing the separator with offset at beginning to align with header
+        System.out.println("   " + colHeaders);// Printing for column headers
+        System.out.println("   " + separator); //Printing the separator with offset at beginning to align with header
 
         // --- BOARD ROWS ---
         for (int row = 0; row < boardSize; row++)
@@ -67,7 +67,7 @@ public class GameLogger
             }
 
             System.out.println(rowBuilder);
-            System.out.println(" " + separator);
+            System.out.println("   " + separator);
         }
     }
 
@@ -80,8 +80,8 @@ public class GameLogger
         final String separator = buildSeparator(boardSize);
 
         System.out.println(); // Newline before printing board
-        System.out.println(" " + colHeaders);// Printing for column headers
-        System.out.println(" " + separator); //Printing the separator with offset at beginning to align with header
+        System.out.println("   " + colHeaders);// Printing for column headers
+        System.out.println("   " + separator); //Printing the separator with offset at beginning to align with header
 
         // --- BOARD ROWS ---
         for (int row = 0; row < boardSize; row++)
@@ -104,6 +104,50 @@ public class GameLogger
                             if (flip.row() == row && flip.col() == col)
                             {
                                 cellContent = "\u001B[31m" + cellContent + "\u001B[0m";
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                rowBuilder.append(String.format(CELL_FORMAT, cellContent));
+            }
+
+            System.out.println(rowBuilder);
+            System.out.println("   " + separator);
+        }
+    }
+
+    public static void printBoard(final SquareState[][] board, final int boardSize, final ArrayList<Move> validMoves)
+    {
+        BoardValidator.validateBoard(board);
+
+        // --- COLUMN HEADERS ---
+        final String colHeaders = buildColumnHeaders(boardSize);
+        final String separator = buildSeparator(boardSize);
+
+        System.out.println(); // Newline before printing board
+        System.out.println("   " + colHeaders);// Printing for column headers
+        System.out.println("   " + separator); //Printing the separator with offset at beginning to align with header
+
+        // --- BOARD ROWS ---
+        for (int row = 0; row < boardSize; row++)
+        {
+            StringBuilder rowBuilder = new StringBuilder(String.format(ROW_LABEL_FORMAT, row));
+
+            for (int col = 0; col < boardSize; col++)
+            {
+                String cellContent = cellContents(board, row, col);
+
+                if (board[row][col] == SquareState.EMPTY)
+                {
+                    if (validMoves != null && !validMoves.isEmpty())
+                    {
+                        for(int i = 0; i < validMoves.size(); i++)
+                        {
+                            if(validMoves.get(i).row() == row && validMoves.get(i).col() == col)
+                            {
+                                cellContent = "\u001B[95m" + " " + (i + 1) + " " + "\u001B[0m";
                                 break;
                             }
                         }
