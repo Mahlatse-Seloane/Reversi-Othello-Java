@@ -39,13 +39,17 @@ public class GameManager
         while(availableSpaces > 0 && consecutivePasses < 2)
         {
             Move[] validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
+
             if(validMoves.length > 0)
             {
+                System.out.println("\n===================================");
+                GameLogger.printBoard(board.peekBoard(), curBoardSize, new ArrayList<>(Arrays.asList(validMoves)));
+
                 Move chosenMove = chooseMove(validMoves);
                 applyMove(chosenMove);
                 Move[] flippedTokens = flipCapturedTokens(chosenMove);
 
-                System.out.println("\n===================================\n");
+                System.out.println();
                 GameLogger.logMoves(chosenMove,new ArrayList<>(Arrays.asList(flippedTokens)),curPlayer.getPlayerID());
                 GameLogger.printBoard(board.peekBoard(), curBoardSize, chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
 
