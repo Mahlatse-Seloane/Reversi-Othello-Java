@@ -10,15 +10,20 @@ public class GameLogger
 
     public static void logMoves(final Move chosenMove, final ArrayList<Move> flippedTokens, final String playerID)
     {
-        if (chosenMove == null)
-            throw new IllegalArgumentException("Chosen move cannot be null");
-
-        if (flippedTokens == null || flippedTokens.isEmpty())
-            throw new IllegalArgumentException("Flipped token coordinates cannot be null or empty");
+        if (flippedTokens == null)
+            throw new IllegalArgumentException("Flipped token coordinates cannot be null");
 
         if (playerID == null || playerID.isEmpty())
             throw new IllegalArgumentException("Player ID cannot be null or empty");
 
+        if (chosenMove == null && flippedTokens.isEmpty())
+        {
+            System.out.println(playerID + " : No valid moves available. Turn passed.");
+            System.out.println();
+            return;
+        }
+
+        assert chosenMove != null;
         StringBuilder playerTurn = new StringBuilder("r" + chosenMove.row() + "c" + chosenMove.col() + " " + playerID + " ,");
         final int noOfMoves = flippedTokens.size();
 
