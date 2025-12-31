@@ -24,11 +24,7 @@ public class GameManager
             throw new IllegalArgumentException("Players cannot be null");
 
         setupGame(boardSize, p1, p2);
-
-        System.out.println("STARTING CONFIGURATION");
-        System.out.println("Board size: " + boardSize + " x " + boardSize);
-        System.out.println();
-        BoardRender.printBoard(board.peekBoard(), new BoardRenderContext());
+        initialState(boardSize);
 
         int consecutivePasses = 0;
         Move chosenMove = null;
@@ -79,6 +75,23 @@ public class GameManager
         assignPlayersIDsAndTokens();
         selectStartingPlayer();
         initializeBoard(boardSize);
+    }
+
+    private void initialState(int boardSize)
+    {
+        System.out.println("STARTING CONFIGURATION");
+        System.out.println();
+        System.out.println("Board size: " + boardSize + " x " + boardSize);
+        System.out.println();
+
+        BoardRender.printBoard(board.peekBoard(), new BoardRenderContext());
+
+        System.out.println("Player 1: " + players[currentIndex].getPlayerID());//+ " -> Token: " + symbols[currentIndex]);
+        System.out.println("Player 2: " + players[1 - currentIndex].getPlayerID());// + " -> Token: " + symbols[1 - currentIndex]);
+        System.out.println();
+
+        InputValidator.readEnter("Press ENTER to start the game.", "Please press ENTER only to start the game.");
+        System.out.println();
     }
 
     private void assignPlayersIDsAndTokens()
