@@ -5,7 +5,6 @@ import java.util.Random;
 public class GameManager
 {
     private Board board;
-    private int curBoardSize;
     private int availableSpaces;
     private final PlayerType[] players;
     private int currentIndex = 0;
@@ -24,12 +23,7 @@ public class GameManager
         if(p1 == null || p2 == null)
             throw new IllegalArgumentException("Players cannot be null");
 
-        players[0] = p1;
-        players[1] = p2;
-
-        assignPlayersIDsAndTokens();
-        selectStartingPlayer();
-        initializeBoard(boardSize);
+        setupGame(boardSize, p1, p2);
 
         System.out.println("STARTING CONFIGURATION");
         System.out.println("Board size: " + boardSize + " x " + boardSize);
@@ -77,6 +71,16 @@ public class GameManager
         return (boardSize >= 4 && boardSize <= 16 && boardSize % 2 == 0);
     }
 
+    private void setupGame(int boardSize, PlayerType p1, PlayerType p2)
+    {
+        players[0] = p1;
+        players[1] = p2;
+
+        assignPlayersIDsAndTokens();
+        selectStartingPlayer();
+        initializeBoard(boardSize);
+    }
+
     private void assignPlayersIDsAndTokens()
     {
         int index = 1;
@@ -108,18 +112,17 @@ public class GameManager
 
     private void initializeBoard(final int boardSize)
     {
-        curBoardSize = boardSize;
-        board = new Board(curBoardSize);
+        board = new Board(boardSize);
 
-        int initialRow = (curBoardSize/2) - 1;
-        int initialCol = (curBoardSize/2) - 1;
+        int initialRow = (boardSize/2) - 1;
+        int initialCol = (boardSize/2) - 1;
 
         board.setCellContent(initialRow, initialCol,SquareState.BLACK);
         board.setCellContent(initialRow, initialCol+1,SquareState.WHITE);
         board.setCellContent(initialRow+1, initialCol,SquareState.WHITE);
         board.setCellContent(initialRow+1, initialCol+1,SquareState.BLACK);
 
-        availableSpaces = (curBoardSize * curBoardSize) - 4;
+        availableSpaces = (boardSize * boardSize) - 4;
     }
 
     private void renderTurnState(final Move[] validMoves, final Move chosenMove, final Move[] flippedTokens)
