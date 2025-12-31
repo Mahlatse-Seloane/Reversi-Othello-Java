@@ -56,10 +56,7 @@ public class GameManager
             alternatingTurns();
         }
 
-        System.out.println("===================================");
-        System.out.println("RESULTS\n");
-        EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(),p1.getPlayerID(),p1.getPlayerToken(),p2.getPlayerID(),p2.getPlayerToken(),availableSpaces > 0);
-        GameLogger.logGameResults(results);
+        showResults();
     }
 
     private boolean doesBoardSizeMeetRequirements(final int boardSize)
@@ -195,5 +192,13 @@ public class GameManager
 
        currentIndex = 1 - currentIndex;
        curPlayer = players[currentIndex];
+   }
+
+   private void showResults()
+   {
+       System.out.println("===================================");
+       System.out.println("RESULTS\n");
+       EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(), players[0].getPlayerID(), players[0].getPlayerToken(), players[1].getPlayerID(), players[1].getPlayerToken(),availableSpaces > 0);
+       GameLogger.logGameResults(results);
    }
 }
