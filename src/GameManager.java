@@ -17,8 +17,11 @@ public class GameManager
 
     public void simulateSingleGame(final int boardSize,final PlayerType p1,final PlayerType p2)
     {
-        if(!doesBoardSizeMeetRequirements(boardSize))
+        if (!doesBoardSizeMeetRequirements(boardSize))
+        {
+            System.out.println("Invalid board size. Must be even and between 4 and 16.");
             return;
+        }
 
         if(p1 == null || p2 == null)
             throw new IllegalArgumentException("Players cannot be null");
@@ -26,19 +29,21 @@ public class GameManager
         setupGame(boardSize, p1, p2);
         initialState(boardSize);
 
+        boolean isGameOver;
         int consecutivePasses = 0;
         Move chosenMove = null;
         Move[] flippedTokens = new Move[0];
+        Move[] validMoves = new Move[0];
 
-        while(availableSpaces > 0 && consecutivePasses < 2)
+        do
         {
-            Move[] validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
+            validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
 
             renderTurnState(validMoves, chosenMove, flippedTokens);
             chosenMove = null;
             flippedTokens = new Move[0];
 
-            if(validMoves.length > 0)
+            if (validMoves.length > 0)
             {
                 chosenMove = chooseMove(validMoves);
                 applyMove(chosenMove);
@@ -53,9 +58,14 @@ public class GameManager
                 consecutivePasses++;
             }
 
-            alternatingTurns();
-        }
+            isGameOver = availableSpaces == 0 || consecutivePasses == 2;
 
+            if (!isGameOver)
+                alternatingTurns();
+        }
+        while(isGameOver);
+
+        renderTurnState(validMoves, chosenMove, flippedTokens);
         showResults();
     }
 
@@ -83,8 +93,8 @@ public class GameManager
 
         BoardRender.printBoard(board.peekBoard(), new BoardRenderContext());
 
-        System.out.println("Player 1: " + players[currentIndex].getPlayerID());//+ " -> Token: " + symbols[currentIndex]);
-        System.out.println("Player 2: " + players[1 - currentIndex].getPlayerID());// + " -> Token: " + symbols[1 - currentIndex]);
+        System.out.println("Player 1: " + players[currentIndex].getPlayerID());
+        System.out.println("Player 2: " + players[1 - currentIndex].getPlayerID());
         System.out.println();
 
         InputValidator.readEnter("Press ENTER to start the game.", "Please press ENTER only to start the game.");
