@@ -44,16 +44,7 @@ public class GameManager
         {
             Move[] validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
 
-            System.out.println("===================================\n");
-            GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
-
-            BoardRenderContext context = new BoardRenderContext();
-            context.setValidMoves(new ArrayList<>(Arrays.asList(validMoves)));
-            context.setFlippedTokens(new ArrayList<>(Arrays.asList(flippedTokens)));
-            context.setChosenMove(chosenMove);
-            context.setShowValidMoves(curPlayer instanceof HumanPlayer);
-
-            BoardRender.printBoard(board.peekBoard(), context);
+            renderTurnState(validMoves, chosenMove, flippedTokens);
             chosenMove = null;
             flippedTokens = new Move[0];
 
@@ -129,6 +120,20 @@ public class GameManager
         board.setCellContent(initialRow+1, initialCol+1,SquareState.BLACK);
 
         availableSpaces = (curBoardSize * curBoardSize) - 4;
+    }
+
+    private void renderTurnState(final Move[] validMoves, final Move chosenMove, final Move[] flippedTokens)
+    {
+        System.out.println("===================================\n");
+        GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
+
+        BoardRenderContext context = new BoardRenderContext();
+        context.setValidMoves(new ArrayList<>(Arrays.asList(validMoves)));
+        context.setFlippedTokens(new ArrayList<>(Arrays.asList(flippedTokens)));
+        context.setChosenMove(chosenMove);
+        context.setShowValidMoves(curPlayer instanceof HumanPlayer);
+
+        BoardRender.printBoard(board.peekBoard(), context);
     }
 
     private Move chooseMove(final Move[] validMoves)
