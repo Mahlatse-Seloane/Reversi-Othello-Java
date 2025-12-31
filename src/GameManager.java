@@ -34,7 +34,7 @@ public class GameManager
         System.out.println("STARTING CONFIGURATION");
         System.out.println("Board size: " + boardSize + " x " + boardSize);
         System.out.println();
-        GameLogger.printBoard(board.peekBoard(),curBoardSize);
+        BoardRender.printBoard(board.peekBoard());
 
         int consecutivePasses = 0;
         Move chosenMove = null;
@@ -46,7 +46,7 @@ public class GameManager
 
             System.out.println("===================================\n");
             GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
-            GameLogger.printBoard(board.peekBoard(), boardSize, new ArrayList<>(Arrays.asList(validMoves)), chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
+            BoardRender.printBoard(board.peekBoard(), new ArrayList<>(Arrays.asList(validMoves)), chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
             chosenMove = null;
             flippedTokens = new Move[0];
 
