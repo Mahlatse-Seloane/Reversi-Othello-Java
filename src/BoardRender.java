@@ -8,32 +8,16 @@ public class BoardRender
 
     private BoardRender(){}
 
-    public static void printBoard(final SquareState[][] board)
-    {
-        render(board, null, null, null);
-    }
-
-    public static void printBoard(final SquareState[][] board, final Move chosenMove, final ArrayList<Move> flippedTokens)
-    {
-        render(board, null, chosenMove, new ArrayList<>(flippedTokens));
-    }
-
-    public static void printBoard(final SquareState[][] board, final ArrayList<Move> validMoves)
-    {
-        render(board, new ArrayList<>(validMoves), null, null);
-    }
-
-    public static void printBoard(final SquareState[][] board, final ArrayList<Move> validMoves, final Move chosenMove, final ArrayList<Move> flippedTokens)
-    {
-        render(board, new ArrayList<>(validMoves), chosenMove, new ArrayList<>(flippedTokens));
-    }
-
-    private static void render(final SquareState[][] board, final ArrayList<Move> validMoves, final Move chosenMove, final ArrayList<Move> flippedTokens)
+    public static void printBoard(final SquareState[][] board, final BoardRenderContext context)
     {
         BoardValidator.validateBoard(board);
 
+        ArrayList<Move> validMoves = new ArrayList<>(context.getValidMoves());
+        ArrayList<Move> flippedTokens = new ArrayList<>(context.getFlippedTokens());
+        Move chosenMove = context.getChosenMove();
+
         final int boardSize = board.length;
-        final int maxValidMoves = (validMoves != null) ? validMoves.size() : 0;
+        final int maxValidMoves = (!validMoves.isEmpty()) ? validMoves.size() : 0;
 
         // --- COLUMN HEADERS ---
         final String colHeaders = buildColumnHeaders(boardSize);
@@ -53,14 +37,16 @@ public class BoardRender
 
                 if (board[row][col] == SquareState.EMPTY)
                 {
-                    cellContent = highlightValidMoves(row, col, cellContent, validMoves, maxValidMoves);
+                    if(context.showValidMoves())
+                        cellContent = highlightValidMoves(row, col, cellContent, validMoves, maxValidMoves);
                 }
                 else
                 {
-                    if (chosenMove != null && (chosenMove.row() == row && chosenMove.col() == col))
+                    if (context.showChosenMove() && (chosenMove.row() == row && chosenMove.col() == col))
                         cellContent = "\u001B[92m" + cellContent + "\u001B[0m";
 
-                    cellContent = highlightFlippedTokens(row, col, cellContent, flippedTokens);
+                    if (context.showFlippedTokens())
+                        cellContent = highlightFlippedTokens(row, col, cellContent, flippedTokens);
                 }
 
                 rowBuilder.append(String.format(CELL_FORMAT, cellContent));
