@@ -38,9 +38,9 @@ public class GameLogger
         if (results == null)
             throw new IllegalArgumentException("Results cannot be null");
 
-        System.out.println("alg1 = " + results.tokenCount().p1());
-        System.out.println("alg2 = " + results.tokenCount().p2());
-        System.out.println("win = " + results.winner());
+        System.out.println(results.p1ID() + " = " + results.p1TokenCount());
+        System.out.println(results.p2ID() + " = " + results.p2TokenCount());
+        System.out.println("winner = " + results.winner());
         System.out.println("Reason: " + results.reason());
         System.out.println();
     }
