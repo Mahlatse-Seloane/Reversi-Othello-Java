@@ -2,12 +2,12 @@ public class ResultsEvaluator
 {
     private ResultsEvaluator() {}
 
-    public static EndResults determineGameResult(final SquareState[][] board,final String p1ID,final SquareState p1Tok,final String p2ID,final SquareState p2Tok,final boolean endedByConsecutivePasses)
+    public static EndResults determineGameResult(final SquareState[][] board,final String p1ID,final SquareState p1Tok,final String p2ID,final SquareState p2Tok)
     {
         exceptionChecks(board,p1ID,p1Tok,p2ID,p2Tok);
 
         TokenCount tokenCount = getTokensCount(board,p1Tok,p2Tok);
-        String gameEndMessage = (endedByConsecutivePasses) ? "Players passed turns consecutively" : "Game ended normally";
+        String gameEndMessage = determineHowGameEnded(board);
 
         return new EndResults(p1ID, p2ID, tokenCount.p1(), tokenCount.p2(), determineOutcome(tokenCount,p1ID,p2ID),gameEndMessage);
     }
@@ -44,6 +44,24 @@ public class ResultsEvaluator
         }
 
         return new TokenCount(p1TokenCount,p2TokenCount);
+    }
+
+    private static String determineHowGameEnded(final SquareState[][] board)
+    {
+        final int boardSize = board.length;
+
+        for (int row = 0; row < boardSize; row++)
+        {
+            for (int col = 0; col < boardSize; col++)
+            {
+                final SquareState cell = board[row][col];
+                if (cell == SquareState.EMPTY)
+                    return "Players passed turns consecutively";
+
+            }
+        }
+
+        return "All spaces occupied";
     }
 
     private static String determineOutcome(final TokenCount tokenCount,final String p1ID,final String p2ID)

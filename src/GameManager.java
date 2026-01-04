@@ -208,7 +208,7 @@ public class GameManager
    {
        System.out.println("===================================");
        System.out.println("RESULTS\n");
-       EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(), players[0].getPlayerID(), players[0].getPlayerToken(), players[1].getPlayerID(), players[1].getPlayerToken(),availableSpaces > 0);
+       EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(), players[0].getPlayerID(), players[0].getPlayerToken(), players[1].getPlayerID(), players[1].getPlayerToken());
        GameLogger.logGameResults(results);
    }
 }
