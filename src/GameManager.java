@@ -33,7 +33,7 @@ public class GameManager
         int consecutivePasses = 0;
         Move chosenMove = null;
         Move[] flippedTokens = new Move[0];
-        Move[] validMoves = new Move[0];
+        Move[] validMoves;
 
         do
         {
@@ -63,7 +63,7 @@ public class GameManager
             if (!isGameOver)
                 alternatingTurns();
         }
-        while(isGameOver);
+        while(!isGameOver);
 
         renderTurnState(validMoves, chosenMove, flippedTokens);
         showResults();
