@@ -9,6 +9,8 @@ public class GameManager
     private final PlayerType[] players;
     private int currentIndex = 0;
     private PlayerType curPlayer;
+    private enum TurnPhase{START, NORMAL, GAMEOVER}
+    private TurnPhase turnPhase = TurnPhase.START;
 
     GameManager()
     {
@@ -29,7 +31,6 @@ public class GameManager
         setupGame(boardSize, p1, p2);
         initialState(boardSize);
 
-        boolean isGameOver;
         int consecutivePasses = 0;
         Move chosenMove = null;
         Move[] flippedTokens = new Move[0];
@@ -58,12 +59,12 @@ public class GameManager
                 consecutivePasses++;
             }
 
-            isGameOver = availableSpaces == 0 || consecutivePasses == 2;
+            turnPhase = (availableSpaces == 0 || consecutivePasses == 2) ? TurnPhase.GAMEOVER: TurnPhase.NORMAL;
 
-            if (!isGameOver)
+            if (turnPhase != TurnPhase.GAMEOVER)
                 alternatingTurns();
         }
-        while(!isGameOver);
+        while(turnPhase != TurnPhase.GAMEOVER);
 
         renderTurnState(validMoves, chosenMove, flippedTokens);
         showResults();
@@ -147,8 +148,12 @@ public class GameManager
 
     private void renderTurnState(final Move[] validMoves, final Move chosenMove, final Move[] flippedTokens)
     {
-        System.out.println("===================================\n");
-        GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
+        if((turnPhase == TurnPhase.START && !(curPlayer instanceof HumanPlayer)))
+            return;
+
+        System.out.println("=".repeat(35)+"\n");
+        if(turnPhase != TurnPhase.START)
+            GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
 
         BoardRenderContext context = new BoardRenderContext();
         context.setValidMoves(new ArrayList<>(Arrays.asList(validMoves)));
@@ -167,7 +172,7 @@ public class GameManager
         final int maxValidMoves = validMoves.length;
 
         final int chosenMoveIndex = curPlayer.chooseMove(board.peekBoard(),validMoves);
-        if(chosenMoveIndex < 0 || chosenMoveIndex > maxValidMoves)
+        if(chosenMoveIndex < 0 || chosenMoveIndex >= maxValidMoves)
             throw new IndexOutOfBoundsException("Chosen move index: " + chosenMoveIndex + " is out of bounds.");
 
         return validMoves[chosenMoveIndex];
@@ -206,7 +211,7 @@ public class GameManager
 
    private void showResults()
    {
-       System.out.println("===================================");
+       System.out.println("=".repeat(35)+"\n");
        System.out.println("RESULTS\n");
        EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(), players[0].getPlayerID(), players[0].getPlayerToken(), players[1].getPlayerID(), players[1].getPlayerToken());
        GameLogger.logGameResults(results);
