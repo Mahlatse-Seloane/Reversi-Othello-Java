@@ -48,7 +48,8 @@ public class HumanPlayer extends PlayerType
 
     public void setCustomPlayerID()
     {
-        String name = String.format("Player %d", humanNum);
+        String name = "Player" + (humanNum > 1 ? (" " + humanNum): "");
+        GameLogger.logHeader(name.toUpperCase() + " NAME CUSTOMIZATION");
 
         String prompt ="""
                 Do you want to set a custom name?
@@ -65,6 +66,8 @@ public class HumanPlayer extends PlayerType
             boolean nameConfirmed;
             do
             {
+                GameLogger.logHeader(name.toUpperCase() + " NAME CUSTOMIZATION");
+
                 name = InputValidator.readString("Enter custom name: ", "");
                 String proceedPrompt = String.format("""
                                              1. Confirm custom name: %s

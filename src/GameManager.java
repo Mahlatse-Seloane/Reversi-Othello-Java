@@ -87,10 +87,8 @@ public class GameManager
 
     private void initialState(int boardSize)
     {
-        System.out.println("STARTING CONFIGURATION");
-        System.out.println();
-        System.out.println("Board size: " + boardSize + " x " + boardSize);
-        System.out.println();
+        GameLogger.logHeader("STARTING CONFIGURATION");
+        GameLogger.logBoardSize(boardSize);
 
         BoardRender.printBoard(board.peekBoard(), new BoardRenderContext());
 
@@ -153,7 +151,7 @@ public class GameManager
 
         System.out.println("=".repeat(35)+"\n");
         if(turnPhase != TurnPhase.START)
-            GameLogger.logMoves(chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)), players[1 - currentIndex].getPlayerID());
+            GameLogger.logMoves(players[1 - currentIndex].getPlayerID(), chosenMove, new ArrayList<>(Arrays.asList(flippedTokens)));
 
         BoardRenderContext context = new BoardRenderContext();
         context.setValidMoves(new ArrayList<>(Arrays.asList(validMoves)));
@@ -211,8 +209,7 @@ public class GameManager
 
    private void showResults()
    {
-       System.out.println("=".repeat(35)+"\n");
-       System.out.println("RESULTS\n");
+       GameLogger.logHeader("GAME OVER");
        EndResults results = ResultsEvaluator.determineGameResult(board.peekBoard(), players[0].getPlayerID(), players[0].getPlayerToken(), players[1].getPlayerID(), players[1].getPlayerToken());
        GameLogger.logGameResults(results);
    }
