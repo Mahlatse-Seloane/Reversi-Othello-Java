@@ -40,7 +40,7 @@ public class GameManager
         {
             validMoves = MoveRules.findValidMoves(board.peekBoard(), curPlayer.getPlayerToken());
 
-            renderTurnState(validMoves, chosenMove, flippedTokens);
+            displayTurn(validMoves, chosenMove, flippedTokens);
             chosenMove = null;
             flippedTokens = new Move[0];
 
@@ -66,7 +66,7 @@ public class GameManager
         }
         while(turnPhase != TurnPhase.GAMEOVER);
 
-        renderTurnState(validMoves, chosenMove, flippedTokens);
+        displayTurn(validMoves, chosenMove, flippedTokens);
         showResults();
     }
 
@@ -144,7 +144,7 @@ public class GameManager
         availableSpaces = (boardSize * boardSize) - 4;
     }
 
-    private void renderTurnState(final Move[] validMoves, final Move chosenMove, final Move[] flippedTokens)
+    private void displayTurn(Move[] validMoves, final Move chosenMove, Move[] flippedTokens)
     {
         if((turnPhase == TurnPhase.START && !(curPlayer instanceof HumanPlayer)))
             return;
@@ -181,7 +181,7 @@ public class GameManager
         if(chosenMove == null)
             throw new IllegalArgumentException("Chosen move cannot be null");
 
-        board.setCellContent(chosenMove.row(),chosenMove.col(), curPlayer.getPlayerToken());
+        board.setCellContent(chosenMove.row(), chosenMove.col(), curPlayer.getPlayerToken());
     }
 
     private Move[] flipCapturedTokens(final Move chosenMove)
