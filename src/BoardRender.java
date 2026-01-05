@@ -18,13 +18,14 @@ public class BoardRender
 
         final int boardSize = board.length;
         final int maxValidMoves = (!validMoves.isEmpty()) ? validMoves.size() : 0;
+        String padding = "   "; //*****
 
         // --- COLUMN HEADERS ---
         final String colHeaders = buildColumnHeaders(boardSize);
         final String separator = buildSeparator(boardSize);
 
-        System.out.println("   " + colHeaders);// Printing for column headers
-        System.out.println("   " + separator); //Printing the separator with offset at beginning to align with header
+        System.out.println(padding + colHeaders);// Printing for column headers
+        System.out.println(padding + separator); //Printing the separator with offset at beginning to align with header
 
         // --- BOARD ROWS ---
         for (int row = 0; row < boardSize; row++)
@@ -33,7 +34,7 @@ public class BoardRender
 
             for (int col = 0; col < boardSize; col++)
             {
-                String cellContent = cellContents(board, row, col);
+                String cellContent = " " + cellContents(board, row, col) + " ";
 
                 if (board[row][col] == SquareState.EMPTY)
                 {
@@ -53,7 +54,7 @@ public class BoardRender
             }
 
             System.out.println(rowBuilder);
-            System.out.println("   " + separator);
+            System.out.println(padding + separator);
         }
 
         System.out.println();
@@ -63,9 +64,9 @@ public class BoardRender
     {
         return switch (board[row][col])
         {
-            case SquareState.EMPTY -> "   ";
-            case SquareState.WHITE -> " W ";
-            case SquareState.BLACK -> " B ";
+            case SquareState.EMPTY -> SquareState.EMPTY.getSymbol();
+            case SquareState.WHITE -> SquareState.WHITE.getSymbol();
+            case SquareState.BLACK -> SquareState.BLACK.getSymbol();
         };
     }
 
@@ -120,7 +121,3 @@ public class BoardRender
         return cellContent;
     }
 }
-
-
-
-

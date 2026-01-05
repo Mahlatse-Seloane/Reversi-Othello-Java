@@ -94,8 +94,8 @@ public class GameManager
 
         BoardRender.printBoard(board.peekBoard(), new BoardRenderContext());
 
-        System.out.println("Player 1: " + players[currentIndex].getPlayerID());
-        System.out.println("Player 2: " + players[1 - currentIndex].getPlayerID());
+        System.out.println("Player 1: " + players[currentIndex].getPlayerID() + " (" + players[currentIndex].getPlayerToken().getSymbol() + ")");
+        System.out.println("Player 2: " + players[1 - currentIndex].getPlayerID() + " (" + players[1 - currentIndex].getPlayerToken().getSymbol() + ")");
         System.out.println();
 
         InputValidator.readEnter("Press ENTER to start the game.", "Please press ENTER only to start the game.");
