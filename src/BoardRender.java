@@ -18,7 +18,7 @@ public class BoardRender
 
         final int boardSize = board.length;
         final int maxValidMoves = (!validMoves.isEmpty()) ? validMoves.size() : 0;
-        String padding = "   "; //*****
+        String padding = "   ";
 
         // --- COLUMN HEADERS ---
         final String colHeaders = buildColumnHeaders(boardSize);
@@ -34,7 +34,7 @@ public class BoardRender
 
             for (int col = 0; col < boardSize; col++)
             {
-                String cellContent = " " + cellContents(board, row, col) + " ";
+                String cellContent = getCellContents(board, row, col);
 
                 if (board[row][col] == SquareState.EMPTY)
                 {
@@ -44,23 +44,23 @@ public class BoardRender
                 else
                 {
                     if (context.showChosenMove() && (chosenMove.row() == row && chosenMove.col() == col))
-                        cellContent = "\u001B[92m" + cellContent + "\u001B[0m";
+                        cellContent = ConsoleColours.BRIGHT_GREEN + cellContent + ConsoleColours.BRIGHT_WHITE;
 
                     if (context.showFlippedTokens())
                         cellContent = highlightFlippedTokens(row, col, cellContent, flippedTokens);
                 }
 
-                rowBuilder.append(String.format(CELL_FORMAT, cellContent));
+                rowBuilder.append(String.format(CELL_FORMAT, " " + cellContent + " "));
             }
 
             System.out.println(rowBuilder);
             System.out.println(padding + separator);
         }
 
-        System.out.println();
+        System.out.println(ConsoleColours.BRIGHT_WHITE);
     }
 
-    private static String cellContents(final SquareState[][] board, final int row, final int col)
+    private static String getCellContents(final SquareState[][] board, final int row, final int col)
     {
         return switch (board[row][col])
         {
@@ -96,7 +96,7 @@ public class BoardRender
                 if (move.row() == row && move.col() == col)
                 {
                     validMoves.remove(move);
-                    return "\u001B[95m " + (maxValidMoves - validMoves.size()) + " \u001B[0m";
+                    return ConsoleColours.BRIGHT_MAGENTA + (maxValidMoves - validMoves.size()) + ConsoleColours.BRIGHT_WHITE;
                 }
             }
         }
@@ -113,7 +113,7 @@ public class BoardRender
                 if (flip.row() == row && flip.col() == col)
                 {
                     flippedTokens.remove(flip);
-                    return "\u001B[91m" + cellContent + "\u001B[0m";
+                    return ConsoleColours.BRIGHT_RED + cellContent + ConsoleColours.BRIGHT_WHITE;
                 }
             }
         }

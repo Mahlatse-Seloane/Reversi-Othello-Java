@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class HumanPlayer extends PlayerType
 {
     private static int humanNum = 0;
@@ -17,19 +15,22 @@ public class HumanPlayer extends PlayerType
             throw new IllegalArgumentException("Valid moves list cannot be null or empty");
 
         int totalMoves = validMoves.length;
+        String range, prompt;
 
         int index;
         if (totalMoves == 1)
         {
-            String prompt = "Move\u001B[95m 1 \u001B[0mis the only available move. Press ENTER to play the move.";
+            range = ConsoleColours.BRIGHT_MAGENTA + " 1 " + ConsoleColours.BRIGHT_WHITE;
+            prompt = "Move" + range + "is the only available move. Press ENTER to play the move.";
             String errorMessage = "Please press ENTER only to play the move.";
             InputValidator.readEnter(prompt, errorMessage);
             index = 0;
         }
         else
         {
-            String range = String.format("%d - %d", 1, totalMoves);
-            index = InputValidator.readInt("Select a move (\u001B[95m" + range + "\u001B[0m): ", 1, totalMoves) - 1;
+            range = ConsoleColours.BRIGHT_MAGENTA + String.format("%d - %d", 1, totalMoves) + ConsoleColours.BRIGHT_WHITE;
+            prompt = "Select a move (" + range + "): ";
+            index = InputValidator.readInt(prompt, 1, totalMoves) - 1;
         }
 
         System.out.println();

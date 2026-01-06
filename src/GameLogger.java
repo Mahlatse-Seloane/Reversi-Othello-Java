@@ -60,13 +60,16 @@ public class GameLogger
         }
 
         assert chosenMove != null;
-        StringBuilder playerTurn = new StringBuilder(playerID + " : r" + chosenMove.row() + "c" + chosenMove.col() + " →");
+        //StringBuilder playerTurn = new StringBuilder(playerID + " : r" + chosenMove.row() + "c" + chosenMove.col() + " →");
+        StringBuilder playerTurn = new StringBuilder(playerID + " : ");
+        playerTurn.append(ConsoleColours.BRIGHT_GREEN + "r" + chosenMove.row() + "c" + chosenMove.col());
+        playerTurn.append(" →" + ConsoleColours.BRIGHT_RED);
 
         for(Move flip: flippedTokens)
             playerTurn.append(" r").append(flip.row()).append("c").append(flip.col());
 
         System.out.println(playerTurn);
-        System.out.println();
+        System.out.println(ConsoleColours.BRIGHT_WHITE);
     }
 
     public static void logGameResults(final EndResults results)
@@ -86,6 +89,4 @@ public class GameLogger
         System.out.println("Reason: " + results.reason());
         System.out.println();
     }
-
-
 }
