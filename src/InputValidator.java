@@ -12,7 +12,6 @@ public class InputValidator
         boolean inputValid = false;
         int tempInput = 0;
 
-        System.out.println();
         System.out.print(prompt);
         do
         {
@@ -74,7 +73,6 @@ public class InputValidator
 
     public static void readEnter(final String prompt, final String ErrorMessage)
     {
-        System.out.println();
         boolean inputValid = false;
 
         System.out.print(prompt);
