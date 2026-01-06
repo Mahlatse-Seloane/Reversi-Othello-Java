@@ -5,7 +5,7 @@ public final class BoardRenderContext
     private List<Move> validMoves = List.of();
     private List<Move> flippedTokens = List.of();
     private Move chosenMove = null;
-    private boolean showValidMoves;
+    private boolean showValidMoves = false;
 
     public void setValidMoves(List<Move> validMoves)
     {
